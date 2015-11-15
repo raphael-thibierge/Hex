@@ -5,5 +5,6 @@ package Model;
  */
 public enum Color {
     RED,
-    BLUE
+    BLUE,
+    EMPTY
 }
