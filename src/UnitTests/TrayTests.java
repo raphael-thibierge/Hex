@@ -14,11 +14,12 @@ public class TrayTests {
 	public void tray_getCell()
 	{
 		Tray t = new Tray(5,5);
-		assertTrue("Mustn't be null", t.getCell(new TrayCoords(1,1)) != null);
-		//assertEquals("color must be EMPTY", t.getCell(new TrayCoords(1,1)).getColor(), Color.EMPTY);
+		TrayCoords tc = new TrayCoords(1,3);
 		
 		
-	
+		assertTrue("Mustn't be null", t.getCell(tc) != null);
+		assertEquals("color must be EMPTY", t.getCell(tc).getColor(), Color.EMPTY);
+		assertEquals("coord must be equals", t.getCell(tc).getCoords(),tc);
 	}
 	
 	
