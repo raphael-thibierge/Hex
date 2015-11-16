@@ -32,16 +32,13 @@ public class Tray {
 
         // for each  grid line
         for (int line = 0 ; line < this.nbLine ; line++){
-
             // create grid line, to insert cells in.
             ArrayList<Cell> arrayLine = new ArrayList<>();
-
             // for each grid column
             for (int column = 0 ; column < this.nbColumn ; column++){
                 // insert a new Cell
                 arrayLine.add(new Cell(new TrayCoords(column, line), new Point((column+1)*space, (line+1)*space)));
             }
-
             // add the array line in grid
             this.grid.add(arrayLine);
         }
@@ -49,9 +46,13 @@ public class Tray {
 
 
     public boolean putTocken(TrayCoords coords, Color color){
+        // if coords and color are valide
         if (Color.validPlayerColor(color) && valideCoords(coords)){
+            // get cell in  grid
             Cell cell = getCell(coords);
+            // if cell is free
             if (cell != null && !cell.isTacken()){
+                // change cell color and increment number of tokens in grid;
                 cell.setColor(color);
                 this.cptTokenCells++;
                 return true;
@@ -70,8 +71,10 @@ public class Tray {
 
     public boolean clickOnGrid(Point position){
         if (position != null){
+            // for each cell in the tray
             for (int line = 0 ; line < this.nbLine ; line++){
                 for (int column = 0 ; column < this.nbColumn ; column++){
+                    // test if the click is on the cell
                     if (this.getCell(new TrayCoords(column, line)).clickOnCell(position))
                         return true;
                 }
@@ -81,10 +84,7 @@ public class Tray {
     }
 
     private boolean valideCoords(TrayCoords coords){
-        if (coords != null && coords.getY() < this.nbLine && coords.getX() < this.nbColumn){
-            return true;
-        }
-        return false;
+        return (coords != null && coords.getY() < this.nbLine && coords.getX() < this.nbColumn);
     }
 
 
@@ -107,6 +107,4 @@ public class Tray {
         }
         return null;
     }
-
-
 }

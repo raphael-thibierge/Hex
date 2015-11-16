@@ -19,6 +19,14 @@ public class TrayCoords {
         this.setY(Y);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof TrayCoords){
+            return ((TrayCoords) obj).getX() == this.getX() && ((TrayCoords) obj).getY() == this.getY();
+        }
+        return false;
+    }
+
     public int getX() {
         return X;
     }
