@@ -20,6 +20,7 @@ public class CellTests {
         cell.setColor(Color.BLUE);
         cell.reset();
         assertTrue("Color must be empty", cell.getColor() == Color.EMPTY);
+
     }
 
 }
