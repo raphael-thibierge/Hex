@@ -89,7 +89,7 @@ public class Tray {
         return nbColumn;
     }
 
-    private Cell getCell(TrayCoords coords){
+    public Cell getCell(TrayCoords coords){
         if (valideCoords(coords)){
             return this.grid.get(coords.getY()).get(coords.getX());
         }
