@@ -46,6 +46,12 @@ public class Cell extends Polygon {
         return false;
     }
 
+    public boolean isTacken(){
+        if (!this.color.equals(Color.EMPTY))
+            return true;
+        return false;
+    }
+
     /*
     *
     * ACCESSORS
