@@ -40,16 +40,11 @@ public class Cell extends Polygon {
     }
 
     public boolean clickOnCell(Point position){
-        if (position != null){
-            return this.contains(position.getX(), position.getY());
-        }
-        return false;
+        return position != null && this.contains(position.getX(), position.getY());
     }
 
     public boolean isTacken(){
-        if (!this.color.equals(Color.EMPTY))
-            return true;
-        return false;
+        return !this.color.equals(Color.EMPTY);
     }
 
     /*

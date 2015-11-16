@@ -19,6 +19,10 @@ public enum Color {
         return this.javaColor;
     }
 
+    public static boolean validPlayerColor(Color color){
+        return color != null && !color.equals(EMPTY);
+    }
+
     public static Color oppositeColor(Color color){
         if (color != null){
             if (color.equals(BLUE))
