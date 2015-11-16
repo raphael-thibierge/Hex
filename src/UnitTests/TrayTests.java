@@ -22,7 +22,6 @@ public class TrayTests {
 		assertEquals("coord must be equals", t.getCell(tc).getCoords(),tc);
 	}
 	
-	
 	@Test
 	public void tray_reset()
 	{
@@ -33,5 +32,23 @@ public class TrayTests {
 			assertEquals("color must be EMPTY", t.getCell(new TrayCoords(column, line)).getColor(), Color.EMPTY);
 			}
 	}
-
+	
+	@Test
+	public void tray_isFull()
+	{
+		
+	}
+	
+	@Test
+	public void tray_testVictory()
+	{
+		
+	}
+	
+	@Test
+	public void tray_valideCoords()
+	{
+		
+	}
+	
 }
