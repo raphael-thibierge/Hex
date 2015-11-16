@@ -45,10 +45,18 @@ public class Tray {
 
 
     public boolean putTocken(TrayCoords coords, Color color){
+        if (color != null && valideCoords(coords)){
+            Cell cell = getCell(coords);
+            if (cell != null && !cell.isTacken()){
+                cell.setColor(color);
+                return true;
+            }
+        }
         return false;
     }
 
     public boolean isFool(){
+        
         return false;
     }
 
@@ -60,6 +68,12 @@ public class Tray {
         return false;
     }
 
+    private boolean valideCoords(TrayCoords coords){
+        if (coords != null && coords.getY() < this.nbLine && coords.getX() < this.nbColumn){
+            return true;
+        }
+        return false;
+    }
 
 
     /*
@@ -73,6 +87,13 @@ public class Tray {
 
     public int getNbColumn() {
         return nbColumn;
+    }
+
+    private Cell getCell(TrayCoords coords){
+        if (valideCoords(coords)){
+            return this.grid.get(coords.getY()).get(coords.getX());
+        }
+        return null;
     }
 
 
