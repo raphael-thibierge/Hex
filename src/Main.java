@@ -7,7 +7,7 @@ import Model.GameModel;
 public class Main {
     public static void main(String[] args){
         GameModel model = new GameModel();
-        Controller controller = new Controller(model);
+       // Controller controller = new Controller(model);
 
     }
 }
