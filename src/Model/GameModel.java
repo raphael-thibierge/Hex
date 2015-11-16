@@ -15,15 +15,23 @@ public class GameModel extends Observable {
     }
 
     public void putTocken(TrayCoords coords){
+        if (tray.putTocken(coords, currentPlayer)){
 
+            this.setChanged();
+            this.notifyObservers();
+        }
     }
 
     private void nextPlayer(){
-
+        currentPlayer = Color.oppositeColor(currentPlayer);
     }
 
     public void newGame(){
+        this.tray = new Tray(10,10);
+        this.currentPlayer = Color.BLUE;
 
+        this.setChanged();
+        this.notifyObservers();
     }
 
 }

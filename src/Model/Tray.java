@@ -18,6 +18,7 @@ public class Tray {
     public Tray(int nbLine, int nbColumn){
         this.nbLine = abs(nbLine);
         this.nbColumn = abs(nbColumn);
+        // init the tray
         this.reset();
     }
 
@@ -45,10 +46,11 @@ public class Tray {
 
 
     public boolean putTocken(TrayCoords coords, Color color){
-        if (color != null && valideCoords(coords)){
+        if (Color.validPlayerColor(color) && valideCoords(coords)){
             Cell cell = getCell(coords);
             if (cell != null && !cell.isTacken()){
                 cell.setColor(color);
+                this.cptTokenCells++;
                 return true;
             }
         }
@@ -56,8 +58,7 @@ public class Tray {
     }
 
     public boolean isFool(){
-        
-        return false;
+        return this.cptTokenCells == this.nbLine*this.nbColumn;
     }
 
     public boolean testVictory(Color color){
@@ -65,6 +66,14 @@ public class Tray {
     }
 
     public boolean clickOnGrid(Point position){
+        if (position != null){
+            for (int line = 0 ; line < this.nbLine ; line++){
+                for (int column = 0 ; column < this.nbColumn ; column++){
+                    if (this.getCell(new TrayCoords(column, line)).clickOnCell(position))
+                        return true;
+                }
+            }
+        }
         return false;
     }
 
