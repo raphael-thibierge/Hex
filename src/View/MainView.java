@@ -27,7 +27,6 @@ public class MainView extends JFrame implements Observer {
 
         this.controller = controller;
         this.model = model;
-
     }
 
     @Override
@@ -38,6 +37,5 @@ public class MainView extends JFrame implements Observer {
     }
 
     private void displayGrid(){
-
     }
 }

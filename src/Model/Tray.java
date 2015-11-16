@@ -27,6 +27,9 @@ public class Tray {
         // space between cells
         int space = 50;
 
+        // init grid
+        this.grid = new ArrayList<>();
+
         // for each  grid line
         for (int line = 0 ; line < this.nbLine ; line++){
 
@@ -36,7 +39,7 @@ public class Tray {
             // for each grid column
             for (int column = 0 ; column < this.nbColumn ; column++){
                 // insert a new Cell
-                arrayLine.add(new Cell(new TrayCoords(line, column), new Point((line+1)*space, (column+1)*space)));
+                arrayLine.add(new Cell(new TrayCoords(column, line), new Point((column+1)*space, (line+1)*space)));
             }
 
             // add the array line in grid
