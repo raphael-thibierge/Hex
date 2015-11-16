@@ -7,11 +7,11 @@ import java.awt.*;
  */
 public class Cell extends Polygon {
     private TrayCoords coords;
-    private GraphicPosition position;
+    private Point position;
     private Color color;
     private final int rad = 30;
 
-    public Cell(TrayCoords coords, GraphicPosition position) throws NullPointerException{
+    public Cell(TrayCoords coords, Point position) throws NullPointerException{
         super();
 
         if (coords == null || position == null){
@@ -38,7 +38,7 @@ public class Cell extends Polygon {
         color = Color.EMPTY;
     }
 
-    public boolean clickOnCell(GraphicPosition position){
+    public boolean clickOnCell(Point position){
         if (position != null){
             return this.contains(position.getX(), position.getY());
         }
@@ -54,7 +54,7 @@ public class Cell extends Polygon {
         return coords;
     }
 
-    public GraphicPosition getPosition() {
+    public Point getPosition() {
         return position;
     }
 

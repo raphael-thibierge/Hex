@@ -34,7 +34,7 @@ public class Tray {
             // for each grid column
             for (int column = 0 ; column < this.nbColumn ; column++){
                 // insert a new Cell
-                arrayLine.add(new Cell(new TrayCoords(line, column), new GraphicPosition((line+1)*space, (column+1)*space)));
+                arrayLine.add(new Cell(new TrayCoords(line, column), new Point((line+1)*space, (column+1)*space)));
             }
 
             // add the array line in grid
@@ -55,7 +55,7 @@ public class Tray {
         return false;
     }
 
-    public boolean clickOnGrid(GraphicPosition position){
+    public boolean clickOnGrid(Point position){
         return false;
     }
 
