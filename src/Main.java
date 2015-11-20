@@ -1,5 +1,6 @@
 import Controller.Controller;
 import Model.GameModel;
+import View.MainView;
 
 /**
  * Created by raphael on 15/11/15.
@@ -7,7 +8,7 @@ import Model.GameModel;
 public class Main {
     public static void main(String[] args){
         GameModel model = new GameModel();
-       // Controller controller = new Controller(model);
-
+        Controller controller = new Controller(model);
+        MainView view = new MainView(controller, model);
     }
 }

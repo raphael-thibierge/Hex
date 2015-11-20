@@ -15,8 +15,8 @@ public class MainView extends JFrame implements Observer {
 
     private GameModel model;
     private Controller controller;
-    private int width;
-    private int height;
+    private int width = 600;
+    private int height = 600;
     private Click mouseClick;
     private JPanel gamePannel;
 
@@ -24,18 +24,28 @@ public class MainView extends JFrame implements Observer {
         if (controller == null || model == null){
             throw new NullPointerException();
         }
+        this.setSize(this.width, this.height);
 
         this.controller = controller;
         this.model = model;
+        this.model.addObserver(this);
+
+        this.mouseClick = new Click(this.controller, this.model);
+        this.addMouseListener(mouseClick);
+
+        // set game pannel
+        this.gamePannel = new GamePannel(this.width, this.height, this.model.getTray());
+        this.setContentPane(this.gamePannel);
+
+        this.setVisible(true);
     }
 
     @Override
     public void update(Observable o, Object arg) {
         if (o != null && o instanceof GameModel){
-            displayGrid();
+            this.repaint();
         }
     }
 
-    private void displayGrid(){
-    }
+
 }

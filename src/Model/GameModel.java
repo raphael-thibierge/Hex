@@ -14,7 +14,9 @@ public class GameModel extends Observable {
     private Color winner = null;
 
     public GameModel(){
-
+        tray = new Tray(5, 5);
+        this.inGame = true;
+        this.currentPlayer = Color.BLUE;
     }
 
     public void putTocken(TrayCoords coords){
@@ -51,4 +53,16 @@ public class GameModel extends Observable {
         this.notifyObservers();
     }
 
+
+    /*
+    * ACCESSORS
+    * */
+
+    public Tray getTray() {
+        return tray;
+    }
+
+    public boolean isInGame() {
+        return inGame;
+    }
 }

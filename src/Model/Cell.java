@@ -28,6 +28,7 @@ public class Cell extends Polygon {
     }
 
     private void initPolygon(){
+
         double arc=(Math.PI*2)/6;
         for (int i=0; i<=6; i++) {
             this.addPoint((int) Math.round(position.getX() + rad * Math.cos(arc * i)),
@@ -66,5 +67,12 @@ public class Cell extends Polygon {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public void setPosition(Point position) {
+        // translate polygon position
+        this.translate(position.x - this.position.x, position.y - this.position.y);
+        // set position
+        this.position = position;
     }
 }
