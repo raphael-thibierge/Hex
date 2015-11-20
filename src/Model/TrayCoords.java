@@ -5,40 +5,40 @@ package Model;
  * Created by raphael on 15/11/15.
  */
 public class TrayCoords {
-    private int X;
-    private int Y;
+    private int column;
+    private int line;
 
     public TrayCoords(){
-        this.X = 0;
-        this.Y = 0;
+        this.column = 0;
+        this.line = 0;
     }
 
-    public TrayCoords(int X, int Y){
-        this.setX(X);
-        this.setY(Y);
+    public TrayCoords(int line, int column){
+        this.setColumn(column);
+        this.setLine(line);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof TrayCoords){
-            return ((TrayCoords) obj).getX() == this.getX() && ((TrayCoords) obj).getY() == this.getY();
+            return ((TrayCoords) obj).getColumn() == this.getColumn() && ((TrayCoords) obj).getLine() == this.getLine();
         }
         return false;
     }
 
-    public int getX() {
-        return X;
+    public int getColumn() {
+        return column;
     }
 
-    public void setX(int X) {
-        this.X = X;
+    public void setColumn(int column) {
+        this.column = column;
     }
 
-    public int getY() {
-        return Y;
+    public int getLine() {
+        return line;
     }
 
-    public void setY(int Y) {
-        this.Y = Y;
+    public void setLine(int line) {
+        this.line = line;
     }
 }

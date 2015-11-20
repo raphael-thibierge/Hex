@@ -3,9 +3,6 @@ package Model;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.ceil;
-
 /**
  * Created by raphael on 15/11/15.
  */
@@ -23,12 +20,12 @@ public class Tray {
         this.nbLine = nbLine;
         this.nbColumn = nbColumn;
         // init the tray
-        this.reset();
+        this.initTray();
     }
 
-    private void reset() {
+    private void initTray() {
         // space between cells
-        int space = 60;
+        int size = 60;
 
         // init grid
         this.grid = new ArrayList<>();
@@ -40,13 +37,12 @@ public class Tray {
             // for each grid column
             for (int column = 0 ; column < this.nbColumn ; column++){
                 // insert a new Cell
-                arrayLine.add(new Cell(new TrayCoords(column, line), getLozPoint(line, column, space)));
+                arrayLine.add(new Cell(new TrayCoords(line, column), getLozPoint(line, column, size)));
             }
             // add the array line in grid
             this.grid.add(arrayLine);
         }
-
-        this.editTrayForm(space);
+        this.editTrayForm(size);
     }
 
 
@@ -74,7 +70,7 @@ public class Tray {
         switch (color){
             case RED:
                 for (int line = 0 ; line < this.nbLine ; line++){
-                    if (browse( this.getCell(new TrayCoords(0, line)), Color.RED)) {
+                    if (browse( this.getCell(new TrayCoords(line, 0)), Color.RED)) {
                         return true;
                     }
                 }
@@ -82,7 +78,7 @@ public class Tray {
 
             case BLUE:
                 for (int column = 0 ; column < this.nbColumn ; column++){
-                    if (browse(this.getCell(new TrayCoords(column, 0)), Color.BLUE)){
+                    if (browse(this.getCell(new TrayCoords(0, column)), Color.BLUE)){
                         return true;
                     }
                 }
@@ -98,10 +94,10 @@ public class Tray {
         if (cell != null && cell.isTacken()
                 &&  color != null  && cell.getColor() == color){
 
-            if (cell.getColor().equals(Color.BLUE) && cell.getCoords().getY() == this.nbLine-1){
+            if (cell.getColor().equals(Color.BLUE) && cell.getCoords().getLine() == this.nbLine-1){
                 return true;
             }
-            if (cell.getColor().equals(Color.RED) && cell.getCoords().getX() == this.nbColumn-1){
+            if (cell.getColor().equals(Color.RED) && cell.getCoords().getColumn() == this.nbColumn-1){
                 return true;
             }
 
@@ -129,12 +125,12 @@ public class Tray {
         TrayCoords cellCoords = cell.getCoords();
 
         ArrayList<TrayCoords> coordsList = new ArrayList<>();
-        coordsList.add(new TrayCoords(cellCoords.getX(), cellCoords.getY()-1));
-        coordsList.add(new TrayCoords(cellCoords.getX(), cellCoords.getY()+1));
-        coordsList.add(new TrayCoords(cellCoords.getX()-1, cellCoords.getY()));
-        coordsList.add(new TrayCoords(cellCoords.getX()+1, cellCoords.getY()));
-        coordsList.add(new TrayCoords(cellCoords.getX()-1, cellCoords.getY()+1));
-        coordsList.add(new TrayCoords(cellCoords.getX() + 1, cellCoords.getY() - 1));
+        coordsList.add(new TrayCoords(cellCoords.getLine(), cellCoords.getColumn()-1));
+        coordsList.add(new TrayCoords(cellCoords.getLine(), cellCoords.getColumn()+1));
+        coordsList.add(new TrayCoords(cellCoords.getLine()-1, cellCoords.getColumn()));
+        coordsList.add(new TrayCoords(cellCoords.getLine()+1, cellCoords.getColumn()));
+        coordsList.add(new TrayCoords(cellCoords.getLine()-1, cellCoords.getColumn()+1));
+        coordsList.add(new TrayCoords(cellCoords.getLine() + 1, cellCoords.getColumn() - 1));
 
         Cell neighbor;
         for (TrayCoords coords : coordsList){
@@ -160,8 +156,8 @@ public class Tray {
 
     public boolean valideCoords(TrayCoords coords){
         return (coords != null
-                && coords.getY() < this.nbLine && coords.getX() < this.nbColumn
-                && coords.getY() >= 0 && coords.getX() >= 0);
+                && coords.getLine() < this.nbLine && coords.getColumn() < this.nbColumn
+                && coords.getLine() >= 0 && coords.getColumn() >= 0);
     }
 
     public void editTrayForm(int space){
@@ -170,22 +166,46 @@ public class Tray {
         for (int line = 0 ; line < this.nbLine ; line++){
             for (int column = 0 ; column < this.nbColumn ; column++){
 
-                Cell cell = this.getCell(new TrayCoords(column, line));
+                Cell cell = this.getCell(new TrayCoords(line, column));
                 if (cell != null){
-                    cell.setPosition(getLozPoint(line, column, space));
+                    cell.setPosition(getHorizontalLozPoint(line, column, space));
                 }
             }
         }
 
     }
 
-    static private Point getLozPoint(int line, int column, int space){
-        int decal = space / 2 ;
-        int x = ((column+1) * space ) /*+ ( decal * column )*/;
-        int y = ((line+1) * space ) + ( decal * column );
+    private Point getLozPoint(int line, int column, int size) {
+        int espacement = 5;
+        int sizeY = (int)(((float)size)*0.88); // provisoire
+        int sizeX = size;
+        int decalY = (sizeY+espacement)/2;
+        int decalX = 3*sizeX/4+espacement;
+        int x = column * decalX;
+        int y = line * (sizeY + espacement) + column * decalY;
+        x+=50;
+        y+=50;
         return new Point(x, y);
     }
 
+    private Point getHorizontalLozPoint(int line, int column, int size){
+
+        int espacement = 5;
+        int sizeY = (int)(((float)size)*0.88); // provisoire
+        int sizeX = size;
+        int decalY = sizeY/2+espacement/2;
+        int decalX = 3*sizeX/4+espacement;
+        int y = line * (decalY) + (decalY)*(nbColumn-column);
+        int x = column * (decalX) + line*(decalX);
+
+        /* in the other side
+        * int y = line * (decalY) + (decalY)*column;
+        int x = column * (decalX) + (nbLine-line)*(decalX);
+        */
+        x+=50;
+        y+=50;
+        return new Point(x, y);
+    }
 
     /*
     *
@@ -202,7 +222,7 @@ public class Tray {
 
     public Cell getCell(TrayCoords coords){
         if (valideCoords(coords)){
-            return this.grid.get(coords.getY()).get(coords.getX()) ;
+            return this.grid.get(coords.getLine()).get(coords.getColumn()) ;
         }
         return null;
     }
@@ -212,7 +232,7 @@ public class Tray {
         if (this.grid != null){
             for (int line = 0 ; line < this.nbLine ; line++){
                 for (int column = 0 ; column < this.getNbColumn() ; column++){
-                    list.add(this.getCell(new TrayCoords(column, line)));
+                    list.add(this.getCell(new TrayCoords(line, column)));
                 }
             }
         }

@@ -2,7 +2,6 @@ package View;
 
 import Model.Cell;
 import Model.Tray;
-import Model.TrayCoords;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +38,11 @@ public class GamePannel extends JPanel {
                     g.setColor(cell.getColor().getJavaColor());
                     g.fillPolygon(cell);
 
-                    g.setColor(Color.black);
+                    if (cell.getCoords().getLine() == 0)
+                        g.setColor(Color.BLUE);
+                    else if (cell.getCoords().getColumn() == 0 )
+                        g.setColor(Color.RED);
+                    else g.setColor(Color.black);
                     g.drawPolygon(cell);
                 }
             }

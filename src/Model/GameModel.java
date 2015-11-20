@@ -81,4 +81,6 @@ public class GameModel extends Observable {
     public Color getWinner() {
         return winner;
     }
+
+
 }

@@ -88,8 +88,8 @@ public class Cell extends Polygon {
 
     @Override
     public String toString() {
-        String text = "line=" + this.getCoords().getY() + " ";
-        text += "column=" + this.getCoords().getX() + " ";
+        String text = "line=" + this.getCoords().getLine() + " ";
+        text += "column=" + this.getCoords().getColumn() + " ";
         text += "Color=" + this.getColor() + " ";
         text += "visited=" + this.visited ;
         return text;

@@ -1,8 +1,6 @@
 package Controller;
 
-import Model.Cell;
 import Model.GameModel;
-import Model.Tray;
 import Model.TrayCoords;
 
 import java.awt.*;
@@ -21,21 +19,22 @@ public class Controller {
         this.model = model;
     }
 
-    public void putToken(TrayCoords coords){
-        model.putTocken(coords);
-    }
-
     public void newGame(){
         model.newGame();
     }
 
-    public void placeToken(Point p){
+    public void
+
+    placeToken(Point p){
         if (this.model.isInGame() && p != null) {
             TrayCoords coords = this.model.getTray().clickOnGrid(p);
             if (coords != null){
-                System.out.println(coords.getY() + " " + coords.getX());
+                System.out.println(coords.getLine() + " " + coords.getColumn());
                 this.model.putTocken(coords);
             }
         }
+    }
+
+    public void setGameSize(int size){
     }
 }

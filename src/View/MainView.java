@@ -17,8 +17,8 @@ public class MainView extends JFrame implements Observer {
 
     private GameModel model;
     private Controller controller;
-    private int width = 600;
-    private int height = 600;
+    private int width = 550;
+    private int height = 500;
     private Click mouseClick;
     private JPanel gamePannel;
 
@@ -38,6 +38,7 @@ public class MainView extends JFrame implements Observer {
         // set game pannel
         this.gamePannel = new GamePannel(this.width, this.height, this.model.getTray());
         this.setContentPane(this.gamePannel);
+        gamePannel.setLocation(0,0);
 
         this.setVisible(true);
     }
