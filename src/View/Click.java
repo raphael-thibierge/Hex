@@ -27,4 +27,9 @@ public class Click extends MouseInputAdapter{
             this.controller.placeToken(e.getPoint());
         }
     }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        super.mouseReleased(e);
+    }
 }

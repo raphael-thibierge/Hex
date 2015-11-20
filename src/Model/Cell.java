@@ -11,6 +11,8 @@ public class Cell extends Polygon {
     private Point position;
     private Color color;
     private final int rad = 30;
+    private boolean visited = false;
+
 
     public Cell(TrayCoords coords, Point position) throws NullPointerException{
         super();
@@ -37,7 +39,7 @@ public class Cell extends Polygon {
     }
 
     public void reset(){
-        color = Color.EMPTY;
+        this.color = Color.EMPTY;
     }
 
     public boolean clickOnCell(Point position){
@@ -74,5 +76,22 @@ public class Cell extends Polygon {
         this.translate(position.x - this.position.x, position.y - this.position.y);
         // set position
         this.position = position;
+    }
+
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    @Override
+    public String toString() {
+        String text = "line=" + this.getCoords().getY() + " ";
+        text += "column=" + this.getCoords().getX() + " ";
+        text += "Color=" + this.getColor() + " ";
+        text += "visited=" + this.visited ;
+        return text;
     }
 }

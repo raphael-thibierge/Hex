@@ -37,6 +37,9 @@ public class GamePannel extends JPanel {
                 if (cell != null){
                     // draw cell
                     g.setColor(cell.getColor().getJavaColor());
+                    g.fillPolygon(cell);
+
+                    g.setColor(Color.black);
                     g.drawPolygon(cell);
                 }
             }

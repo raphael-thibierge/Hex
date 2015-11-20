@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.util.Observable;
 import java.util.Observer;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 /**
  * Created by raphael on 15/11/15.
  */
@@ -44,6 +46,11 @@ public class MainView extends JFrame implements Observer {
     public void update(Observable o, Object arg) {
         if (o != null && o instanceof GameModel){
             this.repaint();
+            if (!this.model.isInGame()){
+                if (this.model.getWinner() != null){
+                    JOptionPane.showMessageDialog(null, "Winner : " + this.model.getWinner().toString());
+                }
+            }
         }
     }
 

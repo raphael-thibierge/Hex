@@ -23,13 +23,25 @@ public class GameModel extends Observable {
         // if token is placed on tray
         if (tray != null && inGame && tray.putTocken(coords, currentPlayer)){
             // test victory
+
             if (tray.testVictory(currentPlayer)){
                 // set winner
                 this.winner = currentPlayer;
                 // stop game
                 this.inGame = false;
 
-            }else{
+                System.out.println("Gagnant " + winner );
+
+            }else if (tray.isFull()){
+                // no victory but tray is full so it's end of the game
+                // there is no winner
+                this.winner = Color.EMPTY;
+                // stop game
+                this.inGame = false;
+
+                System.out.println("Egalité" );
+
+            } else{
                 // it's next player turn
                 this.nextPlayer();
             }
@@ -64,5 +76,9 @@ public class GameModel extends Observable {
 
     public boolean isInGame() {
         return inGame;
+    }
+
+    public Color getWinner() {
+        return winner;
     }
 }

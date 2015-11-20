@@ -1,6 +1,5 @@
 package Model;
 
-import static java.lang.Math.abs;
 
 /**
  * Created by raphael on 15/11/15.
@@ -32,7 +31,7 @@ public class TrayCoords {
     }
 
     public void setX(int X) {
-        this.X = abs(X);
+        this.X = X;
     }
 
     public int getY() {
@@ -40,6 +39,6 @@ public class TrayCoords {
     }
 
     public void setY(int Y) {
-        this.Y = abs(Y);
+        this.Y = Y;
     }
 }
