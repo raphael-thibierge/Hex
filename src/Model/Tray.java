@@ -66,7 +66,7 @@ public class Tray {
         return false;
     }
 
-    public boolean isFool(){
+    public boolean isFull(){
         return this.cptTokenCells == this.nbLine*this.nbColumn;
     }
 
@@ -87,7 +87,7 @@ public class Tray {
         return null;
     }
 
-    private boolean valideCoords(TrayCoords coords){
+    public boolean valideCoords(TrayCoords coords){
         return (coords != null && coords.getY() < this.nbLine && coords.getX() < this.nbColumn);
     }
 
