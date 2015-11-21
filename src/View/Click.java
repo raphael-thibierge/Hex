@@ -2,7 +2,6 @@ package View;
 
 import Controller.Controller;
 import Model.GameModel;
-import Model.Tray;
 
 import javax.swing.event.MouseInputAdapter;
 import java.awt.event.MouseEvent;
@@ -23,7 +22,6 @@ public class Click extends MouseInputAdapter{
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
         if (this.model.isInGame()){
-            System.out.println("Click in game (" + e.getX() + " ; " + e.getY() + ")");
             this.controller.placeToken(e.getPoint());
         }
     }

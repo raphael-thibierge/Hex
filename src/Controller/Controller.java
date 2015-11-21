@@ -19,8 +19,8 @@ public class Controller {
         this.model = model;
     }
 
-    public void newGame(){
-        model.newGame();
+    public void newGame(int size){
+        model.newGame(size);
     }
 
     public void
@@ -29,12 +29,15 @@ public class Controller {
         if (this.model.isInGame() && p != null) {
             TrayCoords coords = this.model.getTray().clickOnGrid(p);
             if (coords != null){
-                System.out.println(coords.getLine() + " " + coords.getColumn());
                 this.model.putTocken(coords);
             }
         }
     }
 
     public void setGameSize(int size){
+    }
+
+    public void changeTrayForm(int form) {
+        model.changeTrayForm(form);
     }
 }

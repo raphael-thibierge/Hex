@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * Created by raphael on 15/11/15.
  */
 public class Tray {
+    public static int standartSize = 5;
     private int nbLine;
     private int nbColumn;
     private int cptTackenCells = 0;
@@ -247,5 +248,6 @@ public class Tray {
     {
     	this.nbColumn = size;
     	this.nbLine = size;
+        this.initTray();
     }
 }

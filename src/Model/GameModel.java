@@ -30,16 +30,12 @@ public class GameModel extends Observable {
                 // stop game
                 this.inGame = false;
 
-                System.out.println("Gagnant " + winner );
-
             }else if (tray.isFull()){
                 // no victory but tray is full so it's end of the game
                 // there is no winner
                 this.winner = Color.EMPTY;
                 // stop game
                 this.inGame = false;
-
-                System.out.println("Egalité" );
 
             } else{
                 // it's next player turn
@@ -56,8 +52,12 @@ public class GameModel extends Observable {
         currentPlayer = Color.oppositeColor(currentPlayer);
     }
 
-    public void newGame(){
-        this.tray = new Tray(10,10);
+    public void newGame(int size){
+        if (this.tray != null){
+            this.tray.editSize(size);
+        } else {
+            this.tray = new Tray(size,size);
+        }
         this.currentPlayer = Color.BLUE;
         this.inGame = true;
 
@@ -83,4 +83,9 @@ public class GameModel extends Observable {
     }
 
 
+    public void changeTrayForm(int form) {
+        this.tray.editTrayForm(60, form);
+        this.setChanged();
+        this.notifyObservers();
+    }
 }
