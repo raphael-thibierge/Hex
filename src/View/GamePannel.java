@@ -17,8 +17,6 @@ public class GamePannel extends JPanel {
         super();
         this.tray = tray;
         this.setSize(width, height);
-
-
     }
 
     @Override

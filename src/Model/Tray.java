@@ -23,7 +23,7 @@ public class Tray {
         this.initTray();
     }
 
-    private void initTray() {
+    public void initTray() {
         // space between cells
         int size = 60;
 
@@ -46,7 +46,7 @@ public class Tray {
             // add the array line in grid
             this.grid.add(arrayLine);
         }
-        this.editTrayForm(size);
+        this.editTrayForm(size,1);
     }
 
 
@@ -168,11 +168,14 @@ public class Tray {
                 && coords.getLine() >= 0 && coords.getColumn() >= 0);
     }
 
-    public void editTrayForm(int size){
+    public void editTrayForm(int size, int mode){
         // set all cell's position
         for (Cell cell : this.getCellList()){
             if (cell != null){
-                cell.setPosition(getHorizontalLozPoint(cell.getCoords().getLine(), cell.getCoords().getColumn(), size));
+            	if(mode == 1)
+            		cell.setPosition(getHorizontalLozPoint(cell.getCoords().getLine(), cell.getCoords().getColumn(), size));
+            	else
+            		cell.setPosition(getLozPoint(cell.getCoords().getLine(), cell.getCoords().getColumn(), size));
             }
         }
 
@@ -238,5 +241,11 @@ public class Tray {
             }
         }
         return list;
+    }
+    
+    public void editSize(int size)
+    {
+    	this.nbColumn = size;
+    	this.nbLine = size;
     }
 }
