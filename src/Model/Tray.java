@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Tray {
     private int nbLine;
     private int nbColumn;
-    private int cptTokenCells = 0;
+    private int cptTackenCells = 0;
 
     private ArrayList<ArrayList<Cell>> grid;
 
@@ -26,6 +26,10 @@ public class Tray {
     private void initTray() {
         // space between cells
         int size = 60;
+
+        if(this.grid != null){
+            this.grid.clear();
+        }
 
         // init grid
         this.grid = new ArrayList<>();
@@ -55,7 +59,7 @@ public class Tray {
             if (cell != null && !cell.isTacken()){
                 // change cell color and increment number of tokens in grid;
                 cell.setColor(color);
-                this.cptTokenCells++;
+                this.cptTackenCells++;
                 return true;
             }
         }
@@ -63,22 +67,27 @@ public class Tray {
     }
 
     public boolean isFull(){
-        return this.cptTokenCells == this.nbLine*this.nbColumn;
+        // number of tacken grid cell equald cells number in grid
+        return this.cptTackenCells == this.nbLine*this.nbColumn;
     }
 
     public boolean testVictory(Color color){
+
         switch (color){
+
             case RED:
+                // if color is red we start from left grid side to go to the right grid side
                 for (int line = 0 ; line < this.nbLine ; line++){
-                    if (browse( this.getCell(new TrayCoords(line, 0)), Color.RED)) {
+                    if (browseToVictory(this.getCell(new TrayCoords(line, 0)), Color.RED)) {
                         return true;
                     }
                 }
                 break;
 
             case BLUE:
+                // if color is red we start from top grid side to go to the down grid side
                 for (int column = 0 ; column < this.nbColumn ; column++){
-                    if (browse(this.getCell(new TrayCoords(0, column)), Color.BLUE)){
+                    if (browseToVictory(this.getCell(new TrayCoords(0, column)), Color.BLUE)){
                         return true;
                     }
                 }
@@ -90,54 +99,52 @@ public class Tray {
         return false;
     }
 
-    private boolean browse(Cell cell, Color color){
+    private boolean browseToVictory(Cell cell, Color color){
+        // to be browsed, a cell have to exist, have the color we search, and have not already been visited
         if (cell != null && cell.isTacken()
-                &&  color != null  && cell.getColor() == color){
+                &&  color != null  && cell.getColor() == color
+                && !cell.isVisited()){
 
+            // if the cell is blue and is on the grid right border, browse has been successfull
             if (cell.getColor().equals(Color.BLUE) && cell.getCoords().getLine() == this.nbLine-1){
                 return true;
             }
+
+            // if the cell is red and is on the grid down border, browse has been successfull
             if (cell.getColor().equals(Color.RED) && cell.getCoords().getColumn() == this.nbColumn-1){
                 return true;
             }
 
+            // had a tag in cell to remember we visit if
             cell.setVisited(true);
 
-            for (Cell neighbor : this.getNextCellsList(cell)){
-                if (neighbor.getColor().equals(cell.getColor())
-                        && !neighbor.isVisited()
-                        && neighbor.isTacken()){
-                    if (browse(neighbor, cell.getColor())){
-                        cell.setVisited(false);
-                        return true;
-                    }
+            // browse all neighbor cells
+            for (Cell neighbor : this.getNeighborCellsList(cell)){
+                // if browse has been successful, return true
+                if (browseToVictory(neighbor, color)){
+                    // unset visited before return
+                    cell.setVisited(false);
+                    return true;
                 }
             }
 
+            // unset visited before return
             cell.setVisited(false);
         }
         return false;
     }
 
-    private ArrayList<Cell> getNextCellsList(Cell cell){
-
+    private ArrayList<Cell> getNeighborCellsList(Cell cell){
+        // list to return
         ArrayList<Cell> list = new ArrayList<>();
+        // get the neighbor cell
         TrayCoords cellCoords = cell.getCoords();
-
-        ArrayList<TrayCoords> coordsList = new ArrayList<>();
-        coordsList.add(new TrayCoords(cellCoords.getLine(), cellCoords.getColumn()-1));
-        coordsList.add(new TrayCoords(cellCoords.getLine(), cellCoords.getColumn()+1));
-        coordsList.add(new TrayCoords(cellCoords.getLine()-1, cellCoords.getColumn()));
-        coordsList.add(new TrayCoords(cellCoords.getLine()+1, cellCoords.getColumn()));
-        coordsList.add(new TrayCoords(cellCoords.getLine()-1, cellCoords.getColumn()+1));
-        coordsList.add(new TrayCoords(cellCoords.getLine() + 1, cellCoords.getColumn() - 1));
-
-        Cell neighbor;
-        for (TrayCoords coords : coordsList){
-            if ((neighbor = this.getCell(coords)) != null){
-                list.add(neighbor);
-            }
-        }
+        list.add(this.getCell(new TrayCoords(cellCoords.getLine(), cellCoords.getColumn()-1)));
+        list.add(this.getCell(new TrayCoords(cellCoords.getLine(), cellCoords.getColumn()+1)));
+        list.add(this.getCell(new TrayCoords(cellCoords.getLine()-1, cellCoords.getColumn())));
+        list.add(this.getCell(new TrayCoords(cellCoords.getLine()+1, cellCoords.getColumn())));
+        list.add(this.getCell(new TrayCoords(cellCoords.getLine()-1, cellCoords.getColumn()+1)));
+        list.add(this.getCell(new TrayCoords(cellCoords.getLine()+1, cellCoords.getColumn()-1)));
         return list;
     }
 
@@ -155,21 +162,17 @@ public class Tray {
     }
 
     public boolean valideCoords(TrayCoords coords){
+        // coords have to refer a grid cell
         return (coords != null
                 && coords.getLine() < this.nbLine && coords.getColumn() < this.nbColumn
                 && coords.getLine() >= 0 && coords.getColumn() >= 0);
     }
 
-    public void editTrayForm(int space){
-        int decal = space / 3 ;
-
-        for (int line = 0 ; line < this.nbLine ; line++){
-            for (int column = 0 ; column < this.nbColumn ; column++){
-
-                Cell cell = this.getCell(new TrayCoords(line, column));
-                if (cell != null){
-                    cell.setPosition(getHorizontalLozPoint(line, column, space));
-                }
+    public void editTrayForm(int size){
+        // set all cell's position
+        for (Cell cell : this.getCellList()){
+            if (cell != null){
+                cell.setPosition(getHorizontalLozPoint(cell.getCoords().getLine(), cell.getCoords().getColumn(), size));
             }
         }
 
@@ -197,11 +200,6 @@ public class Tray {
         int decalX = 3*sizeX/4+espacement;
         int y = line * (decalY) + (decalY)*(nbColumn-column);
         int x = column * (decalX) + line*(decalX);
-
-        /* in the other side
-        * int y = line * (decalY) + (decalY)*column;
-        int x = column * (decalX) + (nbLine-line)*(decalX);
-        */
         x+=50;
         y+=50;
         return new Point(x, y);
@@ -228,10 +226,13 @@ public class Tray {
     }
 
     public ArrayList<Cell> getCellList(){
+        // cell list to return
         ArrayList<Cell> list = new ArrayList<>();
         if (this.grid != null){
+            // for each cell in the grif
             for (int line = 0 ; line < this.nbLine ; line++){
                 for (int column = 0 ; column < this.getNbColumn() ; column++){
+                    //add cell in the list
                     list.add(this.getCell(new TrayCoords(line, column)));
                 }
             }
