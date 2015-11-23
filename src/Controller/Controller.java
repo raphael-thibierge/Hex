@@ -1,7 +1,7 @@
 package Controller;
 
-import Model.GameModel;
-import Model.TrayCoords;
+import Model.*;
+import Model.Shape;
 
 import java.awt.*;
 
@@ -34,10 +34,11 @@ public class Controller {
         }
     }
 
-    public void setGameSize(int size){
+    public void setGameSize(int width, int height ){
+        model.setSize(width, height);
     }
 
-    public void changeTrayForm(int form) {
-        model.changeTrayForm(form);
+    public void changeTrayForm(Shape shape) {
+        model.changeTrayForm(shape);
     }
 }

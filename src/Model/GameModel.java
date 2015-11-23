@@ -13,6 +13,8 @@ public class GameModel extends Observable {
     private boolean inGame = false;
     private Color winner = null;
 
+
+
     public GameModel(){
         tray = new Tray(Tray.standartSize, Tray.standartSize);
         this.inGame = true;
@@ -66,6 +68,7 @@ public class GameModel extends Observable {
     }
 
 
+
     /*
     * ACCESSORS
     * */
@@ -83,8 +86,15 @@ public class GameModel extends Observable {
     }
 
 
-    public void changeTrayForm(int form) {
-        this.tray.editTrayForm(60, form);
+    public void changeTrayForm(Shape shape) {
+        int size;
+        this.tray.editTrayForm(shape);
+        this.setChanged();
+        this.notifyObservers();
+    }
+
+    public void setSize(int width, int height) {
+        this.tray.setGraphicSize(width, height);
         this.setChanged();
         this.notifyObservers();
     }

@@ -10,7 +10,7 @@ public class Cell extends Polygon {
     private TrayCoords coords;
     private Point position;
     private Color color;
-    private final int rad = 30;
+    private int rad = 37;
     private boolean visited = false;
 
 
@@ -93,5 +93,15 @@ public class Cell extends Polygon {
         text += "Color=" + this.getColor() + " ";
         text += "visited=" + this.visited ;
         return text;
+    }
+
+    public void setRad(int rad) {
+        this.rad = rad;
+        double arc=(Math.PI*2)/6;
+        for (int i=0; i<=6; i++) {
+            xpoints[i] = ((int) Math.round(position.getX() + rad * Math.cos(arc * i)));
+            ypoints[i] = ((int) Math.round(position.getY() + rad * Math.sin(arc * i)));
+        }
+
     }
 }

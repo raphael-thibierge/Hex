@@ -2,11 +2,13 @@ package View;
 
 import Controller.Controller;
 import Model.GameModel;
+import Model.Shape;
 import Model.Tray;
 import sun.applet.Main;
 
 import javax.swing.*;
 import javax.swing.event.MenuListener;
+import javax.swing.plaf.DimensionUIResource;
 
 import java.awt.Event;
 import java.awt.event.ActionEvent;
@@ -63,11 +65,11 @@ public class MainView extends JFrame implements Observer {
 			}
 
 			else if (arg0.getSource() == classique) {
-				controller.changeTrayForm(2);
+				controller.changeTrayForm(Shape.verticalLozange);
 			}
 
 			else if (arg0.getSource() == loz) {
-				controller.changeTrayForm(1);
+				controller.changeTrayForm(Shape.horizontaleLozange);
 			}
 			
 		}};
@@ -76,22 +78,24 @@ public class MainView extends JFrame implements Observer {
         if (controller == null || model == null){
             throw new NullPointerException();
         }
-        this.setSize(this.width, this.height);
 
         this.controller = controller;
         this.model = model;
         this.model.addObserver(this);
         this.setTitle("HEX - THIBIERGE PAVARINO S3A");
-
+        this.setMinimumSize(new DimensionUIResource(300,300));
         this.mouseClick = new Click(this.controller, this.model);
-        this.addMouseListener(mouseClick);
 
         // set game pannel
         this.gamePannel = new GamePannel(this.width, this.height, this.model.getTray());
         this.setContentPane(this.gamePannel);
-        gamePannel.setLocation(0,0);
+        gamePannel.setLocation(0, 0);
+        this.gamePannel.addMouseListener(mouseClick);
 
         initMenu();
+
+
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         this.setVisible(true);
     }
