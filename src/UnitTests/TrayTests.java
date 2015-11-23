@@ -9,8 +9,6 @@ import Model.Color;
 import Model.Tray;
 import Model.TrayCoords;
 
-import java.util.ArrayList;
-
 public class TrayTests {
 	
 	@Test
@@ -147,14 +145,64 @@ public class TrayTests {
 		assertTrue(t.putTocken(new TrayCoords(1,1), Color.BLUE));
 	}
 
-	@Test
-	public void neighborTest_leftTopCornerCell(){
-		Tray tray = new Tray(3,3);
-		Cell cell = tray.getCell(new TrayCoords(0,0));
-		System.out.println(tray.getNeighborCellsList(cell).size());
-		ArrayList<Cell> list = tray.getNeighborCellsList(cell);
-		assertTrue(tray.getNeighborCellsList(cell).size() == 3);
-		// not finished
+	private boolean testNbNeighbor(Tray tray, TrayCoords coords, int expected){
+		return tray.getNeighborCellsList(tray.getCell(coords)).size() == expected;
 	}
+
+	@Test
+	public void neighborListTest_leftTopCornerCell(){
+		Tray tray = new Tray(3,3);
+		// corners
+		assertTrue(testNbNeighbor(tray, new TrayCoords(0,0), 3));
+		assertTrue(testNbNeighbor(tray, new TrayCoords(0,2), 2));
+		assertTrue(testNbNeighbor(tray, new TrayCoords(2,2), 3));
+		assertTrue(testNbNeighbor(tray, new TrayCoords(2,0), 2));
+
+		// middle
+		assertTrue(testNbNeighbor(tray, new TrayCoords(1,1), 6));
+
+		// others
+		assertTrue(testNbNeighbor(tray, new TrayCoords(0,1), 4));
+		assertTrue(testNbNeighbor(tray, new TrayCoords(1,0), 4));
+		assertTrue(testNbNeighbor(tray, new TrayCoords(1,2), 4));
+		assertTrue(testNbNeighbor(tray, new TrayCoords(2,1), 4));
+	}
+
+	private void testNeighbors(Tray tray, Cell cell){
+		Cell test;
+		test = tray.getCell(new TrayCoords(cell.getCoords().getLine(),cell.getCoords().getColumn()+1));
+		if (test != null)
+			assertTrue(tray.getNeighborCellsList(cell).contains(test));
+
+		test = tray.getCell(new TrayCoords(cell.getCoords().getLine(),cell.getCoords().getColumn()-1));
+		if (test != null)
+			assertTrue(tray.getNeighborCellsList(cell).contains(test));
+
+		test = tray.getCell(new TrayCoords(cell.getCoords().getLine()+1,cell.getCoords().getColumn()));
+		if (test != null)
+			assertTrue(tray.getNeighborCellsList(cell).contains(test));
+
+		test = tray.getCell(new TrayCoords(cell.getCoords().getLine()-1,cell.getCoords().getColumn()));
+		if (test != null)
+			assertTrue(tray.getNeighborCellsList(cell).contains(test));
+
+		test = tray.getCell(new TrayCoords(cell.getCoords().getLine()+1,cell.getCoords().getColumn()+1));
+		if (test != null)
+			assertTrue(tray.getNeighborCellsList(cell).contains(test));
+
+		test = tray.getCell(new TrayCoords(cell.getCoords().getLine()-1,cell.getCoords().getColumn()-1));
+		if (test != null)
+			assertTrue(tray.getNeighborCellsList(cell).contains(test));
+	}
+
+	@Test
+	public void neighborListTest_containsGoodOne(){
+		Tray tray = new Tray(12,12);
+		for (Cell cell : tray.getCellList()){
+			testNeighbors(tray, cell);
+		}
+	}
+
+
 
 }
