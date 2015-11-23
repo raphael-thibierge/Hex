@@ -14,7 +14,7 @@ public class GameModel extends Observable {
     private Color winner = null;
 
     public GameModel(){
-        tray = new Tray(5, 5);
+        tray = new Tray(Tray.standartSize, Tray.standartSize);
         this.inGame = true;
         this.currentPlayer = Color.BLUE;
     }
@@ -22,8 +22,8 @@ public class GameModel extends Observable {
     public void putTocken(TrayCoords coords){
         // if token is placed on tray
         if (tray != null && inGame && tray.putTocken(coords, currentPlayer)){
+            System.out.println(coords.toString());
             // test victory
-
             if (tray.testVictory(currentPlayer)){
                 // set winner
                 this.winner = currentPlayer;

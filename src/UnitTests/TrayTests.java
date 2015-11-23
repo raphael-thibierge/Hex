@@ -2,11 +2,14 @@ package UnitTests;
 
 import static org.junit.Assert.*;
 
+import Model.Cell;
 import org.junit.Test;
 
 import Model.Color;
 import Model.Tray;
 import Model.TrayCoords;
+
+import java.util.ArrayList;
 
 public class TrayTests {
 	
@@ -18,64 +21,89 @@ public class TrayTests {
 		
 		assertTrue("Mustn't be null", t.getCell(tc) != null);
 		assertEquals("color must be EMPTY", t.getCell(tc).getColor(), Color.EMPTY);
-		assertEquals("coord must be equals", t.getCell(tc).getCoords(),tc);
+		assertEquals("coords must be equals", t.getCell(tc).getCoords(),tc);
 	}
+
+	@Test
+	public void getCellOutOfArray(){
+		Tray tray = new Tray(2,2);
+
+		// NEGATIVE VALUES
+		assertTrue("Must be null", tray.getCell(new TrayCoords(0,-1)) == null);
+		assertTrue("Must be null", tray.getCell(new TrayCoords(-1,0)) == null);
+		assertTrue("Must be null", tray.getCell(new TrayCoords(-1,-1)) == null);
+
+		// ARRAY INDEX OUT OF BOUNDS
+		assertTrue("Must be null", tray.getCell(new TrayCoords(2,2)) == null);
+		assertTrue("Must be null", tray.getCell(new TrayCoords(1,2)) == null);
+		assertTrue("Must be null", tray.getCell(new TrayCoords(2,1)) == null);
+	}
+
 	
 	@Test
-	public void tray_reset()
+	public void trayInit()
 	{
 		Tray t = new Tray(10,10);
-		for (int line = 0 ; line < t.getNbLine()  ; line++)
-			for (int column = 0 ; column < t.getNbColumn() ; column++)
-			{
-			assertEquals("color must be EMPTY", t.getCell(new TrayCoords(column, line)).getColor(), Color.EMPTY);
+		for (int line = 0 ; line < t.getNbLine()  ; line++) {
+			for (int column = 0; column < t.getNbColumn(); column++) {
+				assertEquals("color must be EMPTY", t.getCell(new TrayCoords(column, line)).getColor(), Color.EMPTY);
 			}
+		}
 	}
 	
 	@Test
 	public void tray_isFull()
 	{
 		Tray t = new Tray(2,2);
-		
 		assertFalse("tray is not full", t.isFull());
-		
+
+		// fill tray
 		t.putTocken(new TrayCoords(0,0), Color.BLUE);
 		t.putTocken(new TrayCoords(0,1), Color.RED);
 		t.putTocken(new TrayCoords(1,0), Color.BLUE);
 		t.putTocken(new TrayCoords(1,1), Color.RED);
-		
+
 		assertTrue("tray is full", t.isFull());
 	}
-	
+
+	private void shortDiagonal(Color color){
+		Tray t = new Tray(3,3);
+		t.putTocken(new TrayCoords(0,0), color);
+		t.putTocken(new TrayCoords(1,1), color);
+		t.putTocken(new TrayCoords(2,2), color);
+		assertTrue(color + " won", t.testVictory(color));
+	}
+
 	@Test
-	public void tray_testVictory()
-	{
-		// Pas de gagnant
-		
+	public void victory_ShortDiagonal(){
+		shortDiagonal(Color.RED);
+		shortDiagonal(Color.BLUE);
+	}
+
+
+	@Test
+	public void victory_HorizontalVertical(){
+		int size = 8;
+		for (int i = 0; i < size; i++){
+			Tray blueTray = new Tray(size, size);
+			Tray redTray = new Tray(size, size);
+			for (int y = 0 ; y < size ; y++){
+				assertTrue("Red Tocken ("+i+";"+y+")", redTray.putTocken(new TrayCoords(i, y), Color.RED));
+				assertTrue("Blue Tocken ("+y+";"+i+")", blueTray.putTocken(new TrayCoords(y, i), Color.BLUE));
+			}
+			assertTrue("Red victory ! (line "+i+")", redTray.testVictory(Color.RED));
+			assertTrue("Blue victory ! (column "+i+")", blueTray.testVictory(Color.BLUE));
+		}
+	}
+
+	@Test
+	public void noVictoryAfterInitTray(){
 		Tray t = new Tray(3,3);
 		assertFalse("blue didn't won",t.testVictory(Color.BLUE));
 		assertFalse("red didn't won",t.testVictory(Color.RED));
-		
-		//Bleu gagne, rouge perd
-		
-		t.putTocken(new TrayCoords(0,1), Color.BLUE);
-		t.putTocken(new TrayCoords(1,0), Color.BLUE);
-		t.putTocken(new TrayCoords(2,0), Color.BLUE);
-		      
-		assertTrue("blue won",t.testVictory(Color.BLUE));
-		assertFalse("red didn't won",t.testVictory(Color.RED));
-		
-		// Rouge gagne, bleu perd
-		
-		t.getCell(new TrayCoords(2,0)).setColor(Color.EMPTY);
-		
-		t.putTocken(new TrayCoords(0,2), Color.RED);
-		t.putTocken(new TrayCoords(1,1), Color.RED);
-		t.putTocken(new TrayCoords(2,0), Color.RED);
-		
-		assertTrue("red won",t.testVictory(Color.RED));
-		assertFalse("blue didn't won",t.testVictory(Color.BLUE));
+
 	}
+
 	
 	@Test
 	public void tray_testValideCoords()
@@ -118,4 +146,15 @@ public class TrayTests {
 		assertTrue(t.putTocken(new TrayCoords(1,0), Color.RED));
 		assertTrue(t.putTocken(new TrayCoords(1,1), Color.BLUE));
 	}
+
+	@Test
+	public void neighborTest_leftTopCornerCell(){
+		Tray tray = new Tray(3,3);
+		Cell cell = tray.getCell(new TrayCoords(0,0));
+		System.out.println(tray.getNeighborCellsList(cell).size());
+		ArrayList<Cell> list = tray.getNeighborCellsList(cell);
+		assertTrue(tray.getNeighborCellsList(cell).size() == 3);
+		// not finished
+	}
+
 }

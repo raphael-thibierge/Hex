@@ -26,7 +26,6 @@ public class GamePannel extends JPanel {
     }
 
     private void displayTray(Graphics g){
-        System.out.println("Drawn");
 
         if (this.tray != null){
             // for each tray's cells

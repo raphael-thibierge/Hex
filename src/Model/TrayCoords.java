@@ -8,11 +8,6 @@ public class TrayCoords {
     private int column;
     private int line;
 
-    public TrayCoords(){
-        this.column = 0;
-        this.line = 0;
-    }
-
     public TrayCoords(int line, int column){
         this.setColumn(column);
         this.setLine(line);
@@ -40,5 +35,10 @@ public class TrayCoords {
 
     public void setLine(int line) {
         this.line = line;
+    }
+
+    @Override
+    public String toString() {
+        return "Line = " + line + " ; Column = " + column;
     }
 }
