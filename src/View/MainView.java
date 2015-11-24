@@ -75,8 +75,8 @@ public class MainView extends JFrame implements Observer {
         if (controller == null || model == null){
             throw new NullPointerException();
         }
-        int width = 500;
-        int height = 300;
+        int width = 200;
+        int height = 100;
         this.setSize(width, height);
 
         this.controller = controller;
@@ -84,7 +84,7 @@ public class MainView extends JFrame implements Observer {
         this.model.addObserver(this);
 
         this.setTitle("HEX - THIBIERGE PAVARINO S3A");
-        this.setMinimumSize(new DimensionUIResource(300,300));
+        this.setMinimumSize(new DimensionUIResource(200,100));
         this.mouseClick = new Click(this.controller, this.model);
 
         // set game pannel

@@ -12,7 +12,7 @@ import static java.lang.StrictMath.min;
  * Created by raphael on 15/11/15.
  */
 public class Tray {
-    public static int standartSize = 5;
+    public static int standartSize = 2;
     private int nbLine;
     private int nbColumn;
     private int cptTackenCells = 0;
@@ -242,7 +242,4 @@ public class Tray {
 
         this.editTrayForm(this.shape);
     }
-
-
-
 }

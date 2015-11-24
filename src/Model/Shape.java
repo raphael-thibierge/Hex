@@ -52,10 +52,11 @@ public enum  Shape {
             int column = cell.getCoords().getColumn();
             int x = 0 , y = 0 ;
             if (this == verticalLozange){
-                x = column * decalX;
+                x = column * decalX + sizeX/2;
                 y = line * (sizeY + space) + (nbColumn-column) * decalY;
-                x+= (width-(nbColumn*decalX))/2;
-                y+= (height-( nbLine*sizeY + (nbColumn+1)*decalY ))/2;
+                x+= (width-(sizeX+(nbColumn-1)*decalX))/2;
+                y+= (height-(nbLine*sizeY+(nbColumn-1)*(sizeY/2)))/2 - 22;
+                //y+= (height-( nbLine*sizeY + (nbColumn+1)*decalY ))/2;
             } else if (this == horizontaleLozange){
                 y = decalY * (line + column );
                 x = decalX * (column + (nbLine-line));
