@@ -85,9 +85,7 @@ public class GameModel extends Observable {
         return winner;
     }
 
-
     public void changeTrayForm(Shape shape) {
-        int size;
         this.tray.editTrayForm(shape);
         this.setChanged();
         this.notifyObservers();

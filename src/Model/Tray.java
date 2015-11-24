@@ -17,8 +17,8 @@ public class Tray {
     private int nbColumn;
     private int cptTackenCells = 0;
 
-    private int width = 550;
-    private int height = 500;
+    private int width = 0;
+    private int height = 0;
     private Shape shape = Shape.verticalLozange;
 
     private ArrayList<ArrayList<Cell>> grid;
@@ -185,56 +185,12 @@ public class Tray {
     public void editTrayForm(Shape shape){
         this.shape = shape;
 
-        // set all cell's position
-        int espacement = 0;
-        for (Cell cell : this.getCellList()){
-            if (cell != null){
-            	if ( shape == Shape.horizontaleLozange ) {
-                    int size = 4*(width-espacement*nbLine)/3 / (nbColumn*2);
-                    cell.setRad(size/2);
-                    cell.setPosition(getHorizontalLozPoint(cell.getCoords().getLine(), cell.getCoords().getColumn(), size));
+        int size = this.shape.getCellSize(width, height, nbLine, nbColumn);
 
-                }
-            	else if ( shape == Shape.verticalLozange ){
-                    int size = (width / ((nbColumn-1)*2));
-                    cell.setRad(size/2);
-                    cell.setPosition(getLozPoint(cell.getCoords().getLine(), cell.getCoords().getColumn(), size));
-                }
-            }
+        for (Cell cell : this.getCellList()) {
+            cell.setRad(size / 2);
+            cell.setPosition(shape.placeCell(cell, width, height, nbLine, nbColumn));
         }
-
-    }
-
-    private Point getLozPoint(int line, int column, int size) {
-
-
-        int espacement = 0;
-        int sizeY = (int)(((float)size)*0.88); // provisoire
-        int sizeX = size;
-        int decalY = Shape.verticalLozange.getDecalY(sizeY, espacement);
-        int decalX = Shape.verticalLozange.getDecalX(sizeX, espacement);
-        int x = column * decalX;
-        int y = line * (sizeY + espacement) + (nbColumn-column) * decalY;
-        x+= (width-(nbColumn*decalX))/2;
-        y+= sizeY/2;
-        return new Point(x, y);
-    }
-
-    private Point getHorizontalLozPoint(int line, int column, int size){
-
-        int espacement = 0;
-
-        System.out.println(size);
-
-        int sizeY = (int)(((float)size)*0.87); // provisoire
-        int sizeX = size;
-        int decalY = Shape.horizontaleLozange.getDecalY(sizeY, espacement);
-        int decalX = Shape.horizontaleLozange.getDecalX(sizeX, espacement);
-        int y = line * (decalY) + (decalY)*(column);
-        int x = column * (decalX) + (nbLine-line-1)*(decalX);
-        x+= 3*sizeX/4;
-        y+= (height-(sizeY*nbLine))/2;
-        return new Point(x, y);
     }
 
     /*
@@ -251,6 +207,7 @@ public class Tray {
     }
 
     public Cell getCell(TrayCoords coords){
+        // return the cell if coords are valid
         if (valideCoords(coords)){
             return this.grid.get(coords.getLine()).get(coords.getColumn()) ;
         }

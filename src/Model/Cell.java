@@ -104,4 +104,8 @@ public class Cell extends Polygon {
         }
 
     }
+
+    public int getRad() {
+        return rad;
+    }
 }

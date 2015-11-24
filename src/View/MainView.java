@@ -11,9 +11,7 @@ import javax.swing.event.MenuListener;
 import javax.swing.plaf.DimensionUIResource;
 
 import java.awt.Event;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -26,8 +24,7 @@ public class MainView extends JFrame implements Observer {
 
     private GameModel model;
     private Controller controller;
-    private int width = 550;
-    private int height = 500;
+
     private Click mouseClick;
     private JPanel gamePannel;
     private JMenuBar mb;
@@ -78,25 +75,42 @@ public class MainView extends JFrame implements Observer {
         if (controller == null || model == null){
             throw new NullPointerException();
         }
+        int width = 500;
+        int height = 300;
+        this.setSize(width, height);
 
         this.controller = controller;
         this.model = model;
         this.model.addObserver(this);
+
         this.setTitle("HEX - THIBIERGE PAVARINO S3A");
         this.setMinimumSize(new DimensionUIResource(300,300));
         this.mouseClick = new Click(this.controller, this.model);
 
         // set game pannel
-        this.gamePannel = new GamePannel(this.width, this.height, this.model.getTray());
+        this.gamePannel = new GamePannel(width, height, this.model.getTray());
         this.setContentPane(this.gamePannel);
         gamePannel.setLocation(0, 0);
         this.gamePannel.addMouseListener(mouseClick);
 
         initMenu();
 
+        this.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                controller.setGameSize(getWidth(), getHeight());
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {}
+            @Override
+            public void componentShown(ComponentEvent e) {}
+            @Override
+            public void componentHidden(ComponentEvent e) {}
+        });
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
+
         this.setVisible(true);
     }
 
@@ -168,7 +182,12 @@ public class MainView extends JFrame implements Observer {
 
     }
 
-
+    @Override
+    public void setSize(int width, int height) {
+        super.setSize(width, height);
+        if (controller != null){controller.setGameSize(width, height);
+        }
+    }
 }
 
 
