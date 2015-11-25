@@ -1,6 +1,7 @@
 package Model;
 
 import java.awt.*;
+import java.text.DecimalFormat;
 
 import static java.lang.Math.min;
 import static java.lang.Math.sqrt;
@@ -56,24 +57,25 @@ public enum  Shape {
         if (cell != null){
 
             // cell's dimention
-            double cellWidth = cell.getRad()*2;
-            double cellHeight = cellWidth*(sqrt(3)/2.0);
+            int cellWidth = cell.getRad()*2;
+            int cellHeight = (int)(cell.getRad()*2*(sqrt(3)/2.0));
 
             // get transform's position value to place the cell
-            double transformY = this.getTransformY(cellHeight);
-            double transformX =this.getTransformX(cellWidth);
+            int transformY = (int) this.getTransformY(cellHeight);
+            int transformX = (int) this.getTransformX(cellWidth);
 
             // get cell coords
             int line = cell.getCoords().getLine();
             int column = cell.getCoords().getColumn();
             // cell position
-            double positionX = 0 , positionY = 0 ;
+            int positionX = 0 , positionY = 0 ;
 
             // compute cell position
 
             if (this == verticalLozange){
-                positionX = (column * transformX + cellWidth/2.0);
-                positionY = (line * (cellHeight + space) + (nbColumn-column) * transformY);
+                positionX = (column * transformX + (int)(cellWidth/2.0));
+                positionY = (line * ((int)cellHeight + space) + (nbColumn-column) * transformY);
+                // center shape
                 positionX += (width-(cellWidth+(nbColumn-1)*transformX))/2;
                 positionY += (height-(nbLine*cellHeight+((nbColumn-1)*cellHeight)/2))/2;
             }
@@ -81,6 +83,7 @@ public enum  Shape {
             else if (this == horizontalLozange){
                 positionY = (transformY * (line + column+1 ));
                 positionX = (transformX * (column + (nbLine-line-1)));
+                // center shape
                 positionY += (height-(cellHeight*nbLine))/2;
                 positionX += cellWidth/2 + (width-(nbLine + (nbColumn-1)/2)*cellWidth )/2;
             }
