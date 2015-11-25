@@ -1,6 +1,5 @@
 package Model;
 
-
 import java.awt.*;
 
 /**
@@ -16,21 +15,20 @@ public class Cell extends Polygon {
 
     public Cell(TrayCoords coords, Point position) throws NullPointerException{
         super();
-
         if (coords == null || position == null){
             throw new NullPointerException();
         }
-
+        // set coords and graphic position
         this.coords = coords;
         this.position = position;
-
+        // init polygon's points
         initPolygon();
-
-        reset();
+        // set cell empty
+        resetColor();
     }
 
     private void initPolygon(){
-
+        // set position of polygon's points
         double arc=(Math.PI*2)/6;
         for (int i=0; i<=6; i++) {
             this.addPoint((int) Math.round(position.getX() + rad * Math.cos(arc * i)),
@@ -38,7 +36,7 @@ public class Cell extends Polygon {
         }
     }
 
-    public void reset(){
+    public void resetColor(){
         this.color = Color.EMPTY;
     }
 
@@ -51,16 +49,10 @@ public class Cell extends Polygon {
     }
 
     /*
-    *
     * ACCESSORS
     * */
-
     public TrayCoords getCoords() {
         return coords;
-    }
-
-    public Point getPosition() {
-        return position;
     }
 
     public Color getColor() {
@@ -86,6 +78,21 @@ public class Cell extends Polygon {
         this.visited = visited;
     }
 
+    public void setRad(double rad) {
+        // set rad
+        this.rad = (int)rad;
+        // uodate position of polygon's points
+        double arc=(Math.PI*2)/6;
+        for (int i=0; i<=6; i++) {
+            xpoints[i] = ((int) Math.round(position.getX() + rad * Math.cos(arc * i)));
+            ypoints[i] = ((int) Math.round(position.getY() + rad * Math.sin(arc * i)));
+        }
+    }
+
+    public int getRad() {
+        return rad;
+    }
+
     @Override
     public String toString() {
         String text = "line=" + this.getCoords().getLine() + " ";
@@ -93,19 +100,5 @@ public class Cell extends Polygon {
         text += "Color=" + this.getColor() + " ";
         text += "visited=" + this.visited ;
         return text;
-    }
-
-    public void setRad(int rad) {
-        this.rad = rad;
-        double arc=(Math.PI*2)/6;
-        for (int i=0; i<=6; i++) {
-            xpoints[i] = ((int) Math.round(position.getX() + rad * Math.cos(arc * i)));
-            ypoints[i] = ((int) Math.round(position.getY() + rad * Math.sin(arc * i)));
-        }
-
-    }
-
-    public int getRad() {
-        return rad;
     }
 }

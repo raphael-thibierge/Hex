@@ -23,10 +23,9 @@ public class Controller {
         model.newGame(size);
     }
 
-    public void
-
-    placeToken(Point p){
+    public void placeToken(Point p){
         if (this.model.isInGame() && p != null) {
+            // return a valid coords if p is in a cell else return null
             TrayCoords coords = this.model.getTray().clickOnGrid(p);
             if (coords != null){
                 this.model.putTocken(coords);

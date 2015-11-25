@@ -1,27 +1,24 @@
 package Model;
 
-import sun.security.provider.SHA;
-
 import java.awt.*;
 import java.util.ArrayList;
-
-import static java.lang.Math.max;
-import static java.lang.StrictMath.min;
 
 /**
  * Created by raphael on 15/11/15.
  */
 public class Tray {
-    public static int standartSize = 2;
+    public static int standardSize = 7;
+
+    // data information
+    private ArrayList<ArrayList<Cell>> grid;
     private int nbLine;
     private int nbColumn;
     private int cptTackenCells = 0;
 
+    // graphic information
     private int width = 0;
     private int height = 0;
-    private Shape shape = Shape.verticalLozange;
-
-    private ArrayList<ArrayList<Cell>> grid;
+    private Shape shape = Shape.horizontalLozange;
 
     public Tray(int nbLine, int nbColumn) throws NegativeArraySizeException{
         if (nbLine < 0 || nbColumn < 0)
@@ -183,18 +180,20 @@ public class Tray {
     }
 
     public void editTrayForm(Shape shape){
+        // set shape
         this.shape = shape;
 
-        int size = this.shape.getCellSize(width, height, nbLine, nbColumn);
+        // compute size, it depend of the tray shape
+        double size = this.shape.getCellSize(width, height, nbLine, nbColumn);
 
+        // for each cell, set rad and position
         for (Cell cell : this.getCellList()) {
-            cell.setRad(size / 2);
+            cell.setRad(size / 2.0);
             cell.setPosition(shape.placeCell(cell, width, height, nbLine, nbColumn));
         }
     }
 
     /*
-    *
     * ACCESSORS
     * */
 
@@ -229,14 +228,15 @@ public class Tray {
         return list;
     }
     
-    public void editSize(int size)
-    {
+    public void editSize(int size) {
     	this.nbColumn = size;
     	this.nbLine = size;
+        // reset tray's cell's
         this.initTray();
     }
 
     public void setGraphicSize(int width, int height) {
+        // set size and edit tray size and form
         this.width = width;
         this.height = height;
 

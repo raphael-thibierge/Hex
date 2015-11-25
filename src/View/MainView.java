@@ -4,13 +4,10 @@ import Controller.Controller;
 import Model.GameModel;
 import Model.Shape;
 import Model.Tray;
-import sun.applet.Main;
 
 import javax.swing.*;
-import javax.swing.event.MenuListener;
 import javax.swing.plaf.DimensionUIResource;
 
-import java.awt.Event;
 import java.awt.event.*;
 import java.util.Observable;
 import java.util.Observer;
@@ -28,86 +25,39 @@ public class MainView extends JFrame implements Observer {
     private Click mouseClick;
     private JPanel gamePannel;
     private JMenuBar mb;
-    private JMenu game;
-    private JMenu trayOptions;
-    private JMenu formOptions;
-    private JMenuItem newg;
-    private JMenuItem g5;
-    private JMenuItem g8;
-    private JMenuItem g10;
-    private JMenuItem g12;
-    private JMenuItem classique;
-    private JMenuItem loz;
-    private ActionListener ButtonControl = new ActionListener(){
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			
-			if( arg0.getSource() == newg) {
-                controller.newGame(Tray.standartSize);
-			}
-			else if (arg0.getSource() == g5) {
-				controller.newGame(5);
-			}
-			else if (arg0.getSource() == g8) {
-				controller.newGame(8);
-			}
-			
-			else if (arg0.getSource() == g10) {
-                controller.newGame(10);
-            }
+    private static int standardWidth = 600;
+    private static int standardHeight = 400;
+    private static int minimalWidth = 300;
+    private static int minimalHeight = 300;
 
-			else if (arg0.getSource() == g12) {
-                controller.newGame(12);
-			}
-
-			else if (arg0.getSource() == classique) {
-				controller.changeTrayForm(Shape.verticalLozange);
-			}
-
-			else if (arg0.getSource() == loz) {
-				controller.changeTrayForm(Shape.horizontaleLozange);
-			}
-			
-		}};
 
     public MainView(Controller controller, GameModel model) throws NullPointerException{
         if (controller == null || model == null){
             throw new NullPointerException();
         }
-        int width = 200;
-        int height = 100;
-        this.setSize(width, height);
 
         this.controller = controller;
         this.model = model;
         this.model.addObserver(this);
 
         this.setTitle("HEX - THIBIERGE PAVARINO S3A");
-        this.setMinimumSize(new DimensionUIResource(200,100));
-        this.mouseClick = new Click(this.controller, this.model);
+
+        // set size
+        this.setSize(standardWidth, standardHeight);
+        this.setMinimumSize(new DimensionUIResource(minimalWidth,minimalHeight));
 
         // set game pannel
-        this.gamePannel = new GamePannel(width, height, this.model.getTray());
+        this.gamePannel = new GamePannel(standardWidth, standardHeight, model, controller);
         this.setContentPane(this.gamePannel);
-        gamePannel.setLocation(0, 0);
+
+        // set mouse control
+        this.mouseClick = new Click(this.controller, this.model);
         this.gamePannel.addMouseListener(mouseClick);
 
-        initMenu();
-
-        this.addComponentListener(new ComponentListener() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                controller.setGameSize(getWidth(), getHeight());
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent e) {}
-            @Override
-            public void componentShown(ComponentEvent e) {}
-            @Override
-            public void componentHidden(ComponentEvent e) {}
-        });
+        // init menu control
+        this.mb = new Menu(this.controller);
+        this.setJMenuBar(mb);
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -123,69 +73,6 @@ public class MainView extends JFrame implements Observer {
                     JOptionPane.showMessageDialog(null, "Winner : " + this.model.getWinner().toString());
                 }
             }
-        }
-    }
-
-    private void initMenu(){
-        // The menu bar
-        this.mb = new JMenuBar();
-        this.setJMenuBar(mb);
-
-        // First Menu
-        game = new JMenu();
-        game.setText("Jeu");
-        game.setMnemonic(KeyEvent.VK_J);
-        mb.add(game);
-
-        // Item of "game"
-        newg = new JMenuItem("Nouvelle partie");
-        game.add(newg);
-        newg.addActionListener(ButtonControl);
-
-        // Second Menu
-        trayOptions = new JMenu();
-        trayOptions.setText("Grille");
-        trayOptions.setMnemonic(KeyEvent.VK_G);
-        mb.add(trayOptions);
-
-        //Item of "TrayOptions"
-        g5 = new JMenuItem("Grille 5x5");
-        trayOptions.add(g5);
-        g5.addActionListener(ButtonControl);
-
-        g8 = new JMenuItem("Grille 8x8");
-        trayOptions.add(g8);
-        g8.addActionListener(ButtonControl);
-
-        g10 = new JMenuItem("Grille 10x10");
-        trayOptions.add(g10);
-        g10.addActionListener(ButtonControl);
-
-        g12= new JMenuItem("Grille 12x12");
-        trayOptions.add(g12);
-        g12.addActionListener(ButtonControl);
-
-        // Third Menu
-        formOptions = new JMenu();
-        formOptions.setText("Forme");
-        formOptions.setMnemonic(KeyEvent.VK_F);
-        mb.add(formOptions);
-
-        //Item of "TrayForms"
-        classique = new JMenuItem("Classique");
-        formOptions.add(classique);
-        classique.addActionListener(ButtonControl);
-
-        loz = new JMenuItem("Losange");
-        formOptions.add(loz);
-        loz.addActionListener(ButtonControl);
-
-    }
-
-    @Override
-    public void setSize(int width, int height) {
-        super.setSize(width, height);
-        if (controller != null){controller.setGameSize(width, height);
         }
     }
 }

@@ -22,7 +22,7 @@ public class CellTests {
     	TrayCoords tc = new TrayCoords(200,200);
     	Point p = new Point(100,100);
     	Cell c = new Cell(tc, p);
-    	c.reset();
+    	c.resetColor();
     	
     	assertEquals("Color must be EMPTY", c.getColor(), Color.EMPTY );
     }

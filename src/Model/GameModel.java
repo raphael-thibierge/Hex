@@ -14,9 +14,8 @@ public class GameModel extends Observable {
     private Color winner = null;
 
 
-
     public GameModel(){
-        tray = new Tray(Tray.standartSize, Tray.standartSize);
+        tray = new Tray(Tray.standardSize, Tray.standardSize);
         this.inGame = true;
         this.currentPlayer = Color.BLUE;
     }
@@ -55,19 +54,20 @@ public class GameModel extends Observable {
     }
 
     public void newGame(int size){
+        // tray initialisation
         if (this.tray != null){
             this.tray.editSize(size);
         } else {
             this.tray = new Tray(size,size);
         }
+        // set first player color
         this.currentPlayer = Color.BLUE;
+        // game satrt
         this.inGame = true;
-
+        // notify
         this.setChanged();
         this.notifyObservers();
     }
-
-
 
     /*
     * ACCESSORS
@@ -92,8 +92,10 @@ public class GameModel extends Observable {
     }
 
     public void setSize(int width, int height) {
-        this.tray.setGraphicSize(width, height);
-        this.setChanged();
-        this.notifyObservers();
+        if (tray != null){
+            this.tray.setGraphicSize(width, height);
+            this.setChanged();
+            this.notifyObservers();
+        }
     }
 }

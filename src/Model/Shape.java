@@ -3,67 +3,90 @@ package Model;
 import java.awt.*;
 
 import static java.lang.Math.min;
+import static java.lang.Math.sqrt;
 
 /**
  * Created by raphael on 23/11/15.
  */
 public enum  Shape {
 
+    // the two tray shapes
     verticalLozange,
-    horizontaleLozange;
+    horizontalLozange;
 
-    public int getDecalX (int sizeX, int space){
-        return 3*sizeX/4+space;
+    double padReduct = 0.2;
+    int space = 0; // space between two cell in the shape
+
+    public double getTransformX(double cellWidth){
+        return 3.0*cellWidth/4.0+space;
     }
 
-    public int getDecalY (int sizeY, int space){
+    public double getTransformY(double cellHeight){
         if (this == verticalLozange){
-            return (sizeY+space)/2;
+            return (cellHeight+space)/2.0;
         } else {
-            return  sizeY/2+space/2;
+            return  cellHeight/2.0+space/2.0;
         }
     }
 
-    public int getCellSize(int width, int height, int nbLine, int nbColumn){
+    public double getCellSize(int width, int height, int nbLine, int nbColumn){
 
-        int space = 0;
+        // edit width and height to consider a pad
+        width -= width * padReduct;
+        height -= height* padReduct;
 
-        if (this == horizontaleLozange){
-            int spaceWidth = 4*(width-space*nbLine)/3 / (nbColumn*2);
-            int spaceHeight = (height / (nbLine+1));
-            space = min(spaceWidth, spaceHeight);
+        double cellWidth = 0;
+        double cellHeight = 0;
+
+        // compute cell size, it depend of the shape
+        if (this == horizontalLozange){
+             cellWidth = (width/ (nbLine + (nbColumn-1)/2.0));
+             cellHeight = (height / nbLine)*(2.0-sqrt(3)/2.0);
         }
         else if (this == verticalLozange){
-            int spaceWidth = (width / ((nbColumn - 1) * 2));
-            int spaceHeight = (height / (nbLine + nbColumn/2 + 1 ));
-            space = min(spaceWidth, spaceHeight);
+             cellWidth = (width / (nbColumn*4/3));
+             cellHeight = ((height / (nbLine + nbColumn/2 ))*(2.0-sqrt(3)/2.0));
         }
-        return space;
+
+        // return the littlest size value between height and width
+        return min(cellWidth, cellHeight);
     }
 
     public Point placeCell(Cell cell, int width, int height, int nbLine, int nbColumn){
         if (cell != null){
-            int space = 0;
-            int sizeX = cell.getRad()*2;
-            int sizeY = (int)(((float)sizeX)*0.88);
-            int decalY = this.getDecalY(sizeY, space);
-            int decalX =this.getDecalX(sizeX, space);
+
+            // cell's dimention
+            double cellWidth = cell.getRad()*2;
+            double cellHeight = cellWidth*(sqrt(3)/2.0);
+
+            // get transform's position value to place the cell
+            double transformY = this.getTransformY(cellHeight);
+            double transformX =this.getTransformX(cellWidth);
+
+            // get cell coords
             int line = cell.getCoords().getLine();
             int column = cell.getCoords().getColumn();
-            int x = 0 , y = 0 ;
+            // cell position
+            double positionX = 0 , positionY = 0 ;
+
+            // compute cell position
+
             if (this == verticalLozange){
-                x = column * decalX + sizeX/2;
-                y = line * (sizeY + space) + (nbColumn-column) * decalY;
-                x+= (width-(sizeX+(nbColumn-1)*decalX))/2;
-                y+= (height-(nbLine*sizeY+(nbColumn-1)*(sizeY/2)))/2 - 22;
-                //y+= (height-( nbLine*sizeY + (nbColumn+1)*decalY ))/2;
-            } else if (this == horizontaleLozange){
-                y = decalY * (line + column );
-                x = decalX * (column + (nbLine-line));
-                y+= (height-(sizeY*nbLine))/2;
-                x+= ((width-((nbLine+nbColumn) * (decalX)))/2);
+                positionX = (column * transformX + cellWidth/2.0);
+                positionY = (line * (cellHeight + space) + (nbColumn-column) * transformY);
+                positionX += (width-(cellWidth+(nbColumn-1)*transformX))/2;
+                positionY += (height-(nbLine*cellHeight+((nbColumn-1)*cellHeight)/2))/2;
             }
-            return new Point(x,y);
+
+            else if (this == horizontalLozange){
+                positionY = (transformY * (line + column+1 ));
+                positionX = (transformX * (column + (nbLine-line-1)));
+                positionY += (height-(cellHeight*nbLine))/2;
+                positionX += cellWidth/2 + (width-(nbLine + (nbColumn-1)/2)*cellWidth )/2;
+            }
+
+            // return cell posiiton
+            return new Point((int)positionX,(int)positionY);
         }
         return null;
     }
