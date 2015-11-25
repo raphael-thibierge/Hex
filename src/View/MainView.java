@@ -84,6 +84,7 @@ public class MainView extends JFrame implements Observer {
         this.model.addObserver(this);
 
         this.setTitle("HEX - THIBIERGE PAVARINO S3A");
+        this.setIconImage(new ImageIcon("icone.png").getImage());
         this.setMinimumSize(new DimensionUIResource(200,100));
         this.mouseClick = new Click(this.controller, this.model);
 
