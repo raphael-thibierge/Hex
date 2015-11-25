@@ -42,6 +42,7 @@ public class MainView extends JFrame implements Observer {
         this.model.addObserver(this);
 
         this.setTitle("HEX - THIBIERGE PAVARINO S3A");
+        this.setIconImage(new ImageIcon("icone.png").getImage());
 
         // set size
         this.setSize(standardWidth, standardHeight);
