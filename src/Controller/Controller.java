@@ -23,6 +23,7 @@ public class Controller {
         model.newGame(size);
     }
 
+
     public void placeToken(Point p){
         if (this.model.isInGame() && p != null) {
             // return a valid coords if p is in a cell else return null

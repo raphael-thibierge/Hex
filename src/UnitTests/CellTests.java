@@ -21,9 +21,15 @@ public class CellTests {
 
     	TrayCoords tc = new TrayCoords(200,200);
     	Point p = new Point(100,100);
-    	Cell c = new Cell(tc, p);
-    	c.resetColor();
-    	
+
+
+		Cell c = new Cell(tc, p);
     	assertEquals("Color must be EMPTY", c.getColor(), Color.EMPTY );
+
+		c.setColor(Color.RED);
+    	c.resetColor();
+
+    	assertEquals("Color must be EMPTY", c.getColor(), Color.EMPTY );
+		assertTrue(c.getColor().equals(Color.EMPTY));
     }
 }

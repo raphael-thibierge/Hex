@@ -58,11 +58,11 @@ public enum  Shape {
 
             // cell's dimention
             int cellWidth = cell.getRad()*2;
-            int cellHeight = (int)(cell.getRad()*2*(sqrt(3)/2.0));
+            int cellHeight = (int)(cell.getRad()*2*(sqrt(3)/2.0)) ;
 
             // get transform's position value to place the cell
-            int transformY = (int) this.getTransformY(cellHeight);
-            int transformX = (int) this.getTransformX(cellWidth);
+            int transformY = (int) this.getTransformY(cellHeight) + 1;
+            int transformX = (int) this.getTransformX(cellWidth) +1;
 
             // get cell coords
             int line = cell.getCoords().getLine();
@@ -88,7 +88,7 @@ public enum  Shape {
                 positionX += cellWidth/2 + (width-(nbLine + (nbColumn-1)/2)*cellWidth )/2;
             }
 
-            // return cell posiiton
+            // return cell position
             return new Point((int)positionX,(int)positionY);
         }
         return null;

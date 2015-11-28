@@ -18,7 +18,7 @@ public class Tray {
     // graphic information
     private int width = 0;
     private int height = 0;
-    private Shape shape = Shape.horizontalLozange;
+    private Shape shape = Shape.verticalLozange;
 
     public Tray(int nbLine, int nbColumn) throws NegativeArraySizeException{
         if (nbLine < 0 || nbColumn < 0)
@@ -227,7 +227,11 @@ public class Tray {
         }
         return list;
     }
-    
+
+    public Shape getShape() {
+        return shape;
+    }
+
     public void editSize(int size) {
     	this.nbColumn = size;
     	this.nbLine = size;

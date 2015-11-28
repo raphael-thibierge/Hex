@@ -89,6 +89,24 @@ public class Cell extends Polygon {
         }
     }
 
+    public Polygon getBorderPolygone(int nbLine, int nbColumn, int firstPoint, int nbPoint){
+        // uodate position of polygon's points
+        Polygon border = new Polygon();
+
+        double arc=(Math.PI*2)/6;
+        int newRad = rad+ 5;
+        border.addPoint((int) this.position.getX(), (int) this.position.getY());
+
+        if (this.getCoords().getLine() == 0 || this.getCoords().getLine() == nbLine-1
+                ||this.getCoords().getColumn() == 0 || this.getCoords().getColumn() == nbColumn-1){
+            for (int i = 0 ; i < nbPoint ; i++){
+                placePoint(border, newRad, (firstPoint+i)%6);
+            }
+        }
+
+        return border;
+    }
+
     public int getRad() {
         return rad;
     }
@@ -100,5 +118,12 @@ public class Cell extends Polygon {
         text += "Color=" + this.getColor() + " ";
         text += "visited=" + this.visited ;
         return text;
+    }
+
+
+    private void placePoint(Polygon polygon, int newRad, int number){
+        double arc=(Math.PI*2)/6;
+        polygon.addPoint((int) Math.round(position.getX() + newRad * Math.cos(arc * number)),
+                (int) Math.round(position.getY() + newRad * Math.sin(arc * number)));
     }
 }
