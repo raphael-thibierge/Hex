@@ -1,13 +1,17 @@
 package Model;
 
+import Model.Exceptions.BadTraySizeException;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Created by raphael on 15/11/15.
+ * Created by Raphael Thibierge and Arthur Pavarino (S3A) on 15/11/15.
  */
 public class Tray {
-    public static int standardSize = 7;
+    public final static int standardSize = 1;
+    public final static int minimalSize = 2;
+    public static Shape nextTrayShape = Shape.verticalLozange;
 
     // data information
     private ArrayList<ArrayList<Cell>> grid;
@@ -18,11 +22,12 @@ public class Tray {
     // graphic information
     private int width = 0;
     private int height = 0;
-    private Shape shape = Shape.verticalLozange;
+    private Shape shape = nextTrayShape;
 
-    public Tray(int nbLine, int nbColumn) throws NegativeArraySizeException{
-        if (nbLine < 0 || nbColumn < 0)
-            throw new NegativeArraySizeException();
+
+    public Tray(int nbLine, int nbColumn) throws BadTraySizeException{
+        if (nbLine < minimalSize || nbColumn < minimalSize)
+            throw new BadTraySizeException(nbLine, nbColumn);
 
         this.nbLine = nbLine;
         this.nbColumn = nbColumn;
@@ -35,6 +40,8 @@ public class Tray {
         if(this.grid != null){
             this.grid.clear();
         }
+
+        this.cptTackenCells = 0;
 
         // init grid
         this.grid = new ArrayList<>();
@@ -74,6 +81,10 @@ public class Tray {
         // number of tacken grid cell equals cells number in grid
         return this.cptTackenCells == this.nbLine*this.nbColumn;
     }
+
+    public boolean isEmpty(){
+        return this.cptTackenCells == 0;
+    };
 
     public boolean testVictory(Color color){
 
@@ -232,7 +243,10 @@ public class Tray {
         return shape;
     }
 
-    public void editSize(int size) {
+    public void editSize(int size) throws BadTraySizeException{
+        if (size < minimalSize)
+            throw new BadTraySizeException(size, size);
+
     	this.nbColumn = size;
     	this.nbLine = size;
         // reset tray's cell's

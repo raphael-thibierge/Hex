@@ -12,24 +12,24 @@ import Model.Color;
 import Model.TrayCoords;
 
 /**
- * Created by raphael on 16/11/15.
+ * Created by Raphael Thibierge and Arthur Pavarino (S3A) on 16/11/15.
  */
 public class CellTests {
 
     @Test
     public void cell_reset(){
 
-    	TrayCoords tc = new TrayCoords(200,200);
-    	Point p = new Point(100,100);
+    	TrayCoords coords = new TrayCoords(200,200);
+    	Point graphicPoint = new Point(100,100);
 
 
-		Cell c = new Cell(tc, p);
-    	assertEquals("Color must be EMPTY", c.getColor(), Color.EMPTY );
+		Cell cell = new Cell(coords, graphicPoint);
+    	assertEquals("Color must be EMPTY", cell.getColor(), Color.EMPTY );
 
-		c.setColor(Color.RED);
-    	c.resetColor();
+		cell.setColor(Color.RED);
+    	cell.resetColor();
 
-    	assertEquals("Color must be EMPTY", c.getColor(), Color.EMPTY );
-		assertTrue(c.getColor().equals(Color.EMPTY));
+    	assertEquals("Color must be EMPTY", cell.getColor(), Color.EMPTY );
+		assertTrue(cell.getColor().equals(Color.EMPTY));
     }
 }

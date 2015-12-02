@@ -1,13 +1,12 @@
 package Model;
 
 import java.awt.*;
-import java.text.DecimalFormat;
 
 import static java.lang.Math.min;
 import static java.lang.Math.sqrt;
 
 /**
- * Created by raphael on 23/11/15.
+ * Created by Raphael Thibierge and Arthur Pavarino (S3A) on 23/11/15.
  */
 public enum  Shape {
 
@@ -15,8 +14,8 @@ public enum  Shape {
     verticalLozange,
     horizontalLozange;
 
-    double padReduct = 0.2;
-    int space = 0; // space between two cell in the shape
+    private double padReduct = 0.2;
+    private int space = 0; // space between two cell in the shape
 
     public double getTransformX(double cellWidth){
         return 3.0*cellWidth/4.0+space;
@@ -74,7 +73,7 @@ public enum  Shape {
 
             if (this == verticalLozange){
                 positionX = (column * transformX + (int)(cellWidth/2.0));
-                positionY = (line * ((int)cellHeight + space) + (nbColumn-column) * transformY);
+                positionY = (line * (cellHeight + space) + (nbColumn-column) * transformY);
                 // center shape
                 positionX += (width-(cellWidth+(nbColumn-1)*transformX))/2;
                 positionY += (height-(nbLine*cellHeight+((nbColumn-1)*cellHeight)/2))/2;
@@ -89,7 +88,7 @@ public enum  Shape {
             }
 
             // return cell position
-            return new Point((int)positionX,(int)positionY);
+            return new Point(positionX,positionY);
         }
         return null;
     }

@@ -7,7 +7,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by raphael on 23/11/15.
+ * Created by Raphael Thibierge and Arthur Pavarino (S3A) on 23/11/15.
  */
 public class TrayCoordsTest {
 

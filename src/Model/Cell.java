@@ -3,7 +3,7 @@ package Model;
 import java.awt.*;
 
 /**
- * Created by raphael on 15/11/15.
+ * Created by Raphael Thibierge and Arthur Pavarino (S3A) on 15/11/15.
  */
 public class Cell extends Polygon {
     private TrayCoords coords;
@@ -29,10 +29,8 @@ public class Cell extends Polygon {
 
     private void initPolygon(){
         // set position of polygon's points
-        double arc=(Math.PI*2)/6;
         for (int i=0; i<=6; i++) {
-            this.addPoint((int) Math.round(position.getX() + rad * Math.cos(arc * i)),
-                    (int) Math.round(position.getY() + rad * Math.sin(arc * i)));
+            insertPointInPolygon(this, rad, i);
         }
     }
 
@@ -94,13 +92,16 @@ public class Cell extends Polygon {
         Polygon border = new Polygon();
 
         double arc=(Math.PI*2)/6;
+        // border is 5 pixels large
         int newRad = rad+ 5;
+        // add center
         border.addPoint((int) this.position.getX(), (int) this.position.getY());
 
+        // add the points needed for the border
         if (this.getCoords().getLine() == 0 || this.getCoords().getLine() == nbLine-1
-                ||this.getCoords().getColumn() == 0 || this.getCoords().getColumn() == nbColumn-1){
+                || this.getCoords().getColumn() == 0 || this.getCoords().getColumn() == nbColumn-1){
             for (int i = 0 ; i < nbPoint ; i++){
-                placePoint(border, newRad, (firstPoint+i)%6);
+                insertPointInPolygon(border, newRad, (firstPoint + i) % 6);
             }
         }
 
@@ -120,10 +121,9 @@ public class Cell extends Polygon {
         return text;
     }
 
-
-    private void placePoint(Polygon polygon, int newRad, int number){
+    private void insertPointInPolygon(Polygon polygon, int rad, int number){
         double arc=(Math.PI*2)/6;
-        polygon.addPoint((int) Math.round(position.getX() + newRad * Math.cos(arc * number)),
-                (int) Math.round(position.getY() + newRad * Math.sin(arc * number)));
+        polygon.addPoint((int) Math.round(position.getX() + rad * Math.cos(arc * number)),
+                (int) Math.round(position.getY() + rad * Math.sin(arc * number)));
     }
 }

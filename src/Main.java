@@ -1,14 +1,24 @@
+/**
+ * Created by Raphael Thibierge and Arthur Pavarino (S3A) on 15/11/15.
+ */
 import Controller.Controller;
 import Model.GameModel;
 import View.MainView;
 
-/**
- * Created by raphael on 15/11/15.
- */
 public class Main {
     public static void main(String[] args){
-        GameModel model = new GameModel();
-        Controller controller = new Controller(model);
-        MainView view = new MainView(controller, model);
+        GameModel model;
+        Controller controller;
+        MainView view;
+
+
+        // init game
+        try {
+            model = new GameModel();
+            controller = new Controller(model);
+            view = new MainView(controller, model);
+        } catch (Exception e){
+            System.err.println(e.getMessage());
+        }
     }
 }

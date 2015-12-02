@@ -1,44 +1,57 @@
+/**
+ * Created by Raphael Thibierge and Arthur Pavarino (S3A) on 15/11/15.
+ */
 package Controller;
 
 import Model.*;
+import Model.Exceptions.BadTraySizeException;
+import Model.Exceptions.GameModelHasNoTrayException;
+import Model.Exceptions.GameRunningException;
 import Model.Shape;
 
 import java.awt.*;
 
-/**
- * Created by raphael on 15/11/15.
- */
 public class Controller {
     private GameModel model;
 
 
     public Controller(GameModel model) throws NullPointerException{
         if (model == null)
-            throw  new NullPointerException();
-
+            throw  new NullPointerException("model in Controller's constructor is null");
         this.model = model;
     }
 
-    public void newGame(int size){
+    public void newGame(int size) throws BadTraySizeException, GameRunningException {
         model.newGame(size);
     }
 
+    public void forceNewGame(int size) throws BadTraySizeException {
+        this.model.stopGame();
+        try {
+            this.model.newGame(size);
+        } catch (GameRunningException e) {
+            e.printStackTrace();
+        }
+    }
 
-    public void placeToken(Point p){
-        if (this.model.isInGame() && p != null) {
-            // return a valid coords if p is in a cell else return null
-            TrayCoords coords = this.model.getTray().clickOnGrid(p);
+
+    public void placeToken(Point point){
+        if (this.model.isInGame()) {
+            // return a valid coords if point is in a cell else return null
+            TrayCoords coords = this.model.clickOnGrid(point);
             if (coords != null){
                 this.model.putTocken(coords);
             }
         }
     }
 
-    public void setGameSize(int width, int height ){
-        model.setSize(width, height);
+    public void setGraphicGameSize(int width, int height){
+        if (width > 0 && height > 0) {
+            model.setGraphicSize(width, height);
+        }
     }
 
-    public void changeTrayForm(Shape shape) {
+    public void changeTrayForm(Shape shape) throws GameModelHasNoTrayException{
         model.changeTrayForm(shape);
     }
 }

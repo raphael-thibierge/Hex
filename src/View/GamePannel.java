@@ -11,7 +11,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 /**
- * Created by raphael on 20/11/15.
+ * Created by Raphael Thibierge and Arthur Pavarino (S3A) on 20/11/15.
  */
 public class GamePannel extends JPanel {
 
@@ -28,7 +28,7 @@ public class GamePannel extends JPanel {
         this.addComponentListener(new ComponentListener() {
             @Override
             public void componentResized(ComponentEvent e) {
-                controller.setGameSize(getWidth(), getHeight());
+                controller.setGraphicGameSize(getWidth(), getHeight());
             }
 
             @Override
@@ -56,11 +56,14 @@ public class GamePannel extends JPanel {
             int nbColumn = this.model.getTray().getNbColumn();
             int shape = (this.model.getTray().getShape() == Shape.verticalLozange)? 0 : 1;
 
+
+            // TRAY BORDERS
             for (Cell cell : this.model.getTray().getCellList()){
                 if (cell != null){
 
                     // draw top
                     if (cell.getCoords().getLine() == 0) {
+                        // set b
                         g.setColor(Model.Color.BLUE.getJavaColor());
                         g.fillPolygon(cell.getBorderPolygone(nbLine, nbColumn, 3+shape, 3));
 
@@ -109,6 +112,7 @@ public class GamePannel extends JPanel {
                 }
             }
 
+            // TRAY cells
             for (Cell cell : this.model.getTray().getCellList()){
                 if (cell != null){
                     // draw background cell

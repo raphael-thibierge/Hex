@@ -3,27 +3,31 @@ package UnitTests;
 import static org.junit.Assert.*;
 
 import Model.Cell;
+import Model.Exceptions.BadTraySizeException;
 import org.junit.Test;
 
 import Model.Color;
 import Model.Tray;
 import Model.TrayCoords;
 
+/**
+ * Created by Raphael Thibierge and Arthur Pavarino (S3A) on 23/11/15.
+ */
+
 public class TrayTests {
 	
 	@Test
-	public void tray_getCell()
-	{
-		Tray t = new Tray(5,5);
-		TrayCoords tc = new TrayCoords(1,3);
+	public void tray_getCell() throws BadTraySizeException {
+		Tray tray = new Tray(5,5);
+		TrayCoords coords = new TrayCoords(1,3);
 		
-		assertTrue("Mustn't be null", t.getCell(tc) != null);
-		assertEquals("color must be EMPTY", t.getCell(tc).getColor(), Color.EMPTY);
-		assertEquals("coords must be equals", t.getCell(tc).getCoords(),tc);
+		assertTrue("Mustn'tray be null", tray.getCell(coords) != null);
+		assertEquals("color must be EMPTY", tray.getCell(coords).getColor(), Color.EMPTY);
+		assertEquals("coords must be equals", tray.getCell(coords).getCoords(),coords);
 	}
 
 	@Test
-	public void getCellOutOfArray(){
+	public void getCellOutOfArray() throws BadTraySizeException {
 		Tray tray = new Tray(2,2);
 
 		// NEGATIVE VALUES
@@ -39,48 +43,50 @@ public class TrayTests {
 
 	
 	@Test
-	public void trayInit()
-	{
-		Tray t = new Tray(10,10);
-		for (int line = 0 ; line < t.getNbLine()  ; line++) {
-			for (int column = 0; column < t.getNbColumn(); column++) {
-				assertEquals("color must be EMPTY", t.getCell(new TrayCoords(column, line)).getColor(), Color.EMPTY);
+	public void trayInit() throws BadTraySizeException {
+		Tray tray = new Tray(10,10);
+		for (int line = 0 ; line < tray.getNbLine()  ; line++) {
+			for (int column = 0; column < tray.getNbColumn(); column++) {
+				assertEquals("color must be EMPTY", tray.getCell(new TrayCoords(column, line)).getColor(), Color.EMPTY);
 			}
 		}
 	}
 	
 	@Test
-	public void tray_isFull()
-	{
-		Tray t = new Tray(2,2);
-		assertFalse("tray is not full", t.isFull());
+	public void tray_isFull() throws BadTraySizeException {
+		Tray tray = new Tray(2,2);
+		assertFalse("tray is not full", tray.isFull());
 
 		// fill tray
-		t.putTocken(new TrayCoords(0,0), Color.BLUE);
-		t.putTocken(new TrayCoords(0,1), Color.RED);
-		t.putTocken(new TrayCoords(1,0), Color.BLUE);
-		t.putTocken(new TrayCoords(1,1), Color.RED);
+		tray.putTocken(new TrayCoords(0, 0), Color.BLUE);
+		tray.putTocken(new TrayCoords(0, 1), Color.RED);
+		tray.putTocken(new TrayCoords(1, 0), Color.BLUE);
+		tray.putTocken(new TrayCoords(1, 1), Color.RED);
 
-		assertTrue("tray is full", t.isFull());
+		assertTrue("tray is full", tray.isFull());
 	}
 
-	private void shortDiagonal(Color color){
-		Tray t = new Tray(3,3);
-		t.putTocken(new TrayCoords(0,0), color);
-		t.putTocken(new TrayCoords(1,1), color);
-		t.putTocken(new TrayCoords(2,2), color);
-		assertTrue(color + " won", t.testVictory(color));
+	private void shortDiagonal(Color color) throws BadTraySizeException {
+		Tray tray = new Tray(3,3);
+		tray.putTocken(new TrayCoords(0, 0), color);
+		tray.putTocken(new TrayCoords(1, 1), color);
+		tray.putTocken(new TrayCoords(2, 2), color);
+		assertTrue(color + " won", tray.testVictory(color));
 	}
 
 	@Test
 	public void victory_ShortDiagonal(){
-		shortDiagonal(Color.RED);
-		shortDiagonal(Color.BLUE);
+        try {
+            shortDiagonal(Color.RED);
+            shortDiagonal(Color.BLUE);
+        } catch (BadTraySizeException e) {
+            e.printStackTrace();
+        }
 	}
 
 
 	@Test
-	public void victory_HorizontalVertical(){
+	public void victory_HorizontalVertical() throws BadTraySizeException {
 		int size = 8;
 		for (int i = 0; i < size; i++){
 			Tray blueTray = new Tray(size, size);
@@ -95,17 +101,16 @@ public class TrayTests {
 	}
 
 	@Test
-	public void noVictoryAfterInitTray(){
-		Tray t = new Tray(3,3);
-		assertFalse("blue didn't won",t.testVictory(Color.BLUE));
-		assertFalse("red didn't won",t.testVictory(Color.RED));
+	public void noVictoryAfterInitTray() throws BadTraySizeException {
+		Tray tray = new Tray(3,3);
+		assertFalse("blue didn't won", tray.testVictory(Color.BLUE));
+		assertFalse("red didn't won", tray.testVictory(Color.RED));
 
 	}
 
 	
 	@Test
-	public void tray_testValideCoords()
-	{
+	public void tray_testValideCoords() throws BadTraySizeException {
 		Tray t = new Tray(5,5);
 		assertFalse("Coords are invalid",t.valideCoords(new TrayCoords(6,6)));
 		assertFalse("Coords are invalid",t.valideCoords(new TrayCoords(2,6)));
@@ -126,7 +131,7 @@ public class TrayTests {
 	}
 	
 	@Test
-	public void tray_TestPutTocken(){
+	public void tray_TestPutTocken() throws BadTraySizeException {
 		
 		Tray t = new Tray(3,3);
 		t.putTocken(new TrayCoords(0,0), Color.BLUE);
@@ -150,7 +155,7 @@ public class TrayTests {
 	}
 
 	@Test
-	public void neighborListTest_leftTopCornerCell(){
+	public void neighborListTest_leftTopCornerCell() throws BadTraySizeException {
 		Tray tray = new Tray(3,3);
 		// corners
 		assertTrue(testNbNeighbor(tray, new TrayCoords(0,0), 3));
@@ -196,7 +201,7 @@ public class TrayTests {
 	}
 
 	@Test
-	public void neighborListTest_containsGoodOne(){
+	public void neighborListTest_containsGoodOne() throws BadTraySizeException {
 		Tray tray = new Tray(12,12);
 		for (Cell cell : tray.getCellList()){
 			testNeighbors(tray, cell);
