@@ -5,7 +5,7 @@ package UnitTests;
 
 import Model.*;
 import Model.Exceptions.BadTraySizeException;
-import Model.Exceptions.GameModelHasNoTrayException;
+import Model.Exceptions.InitGameModelErrorException;
 import Model.Exceptions.GameRunningException;
 import org.junit.Test;
 
@@ -14,13 +14,10 @@ import static junit.framework.Assert.assertTrue;
 
 public class GameModelTest {
     @Test
-    public void putTocken_changePlayerTest() throws BadTraySizeException {
+    public void putTocken_changePlayerTest() throws InitGameModelErrorException, BadTraySizeException, GameRunningException {
         GameModel gameModel = new GameModel();
-        try {
-            gameModel.newGame(2);
-        } catch (GameRunningException e) {
-            e.printStackTrace();
-        }
+        gameModel.newGame(2);
+
 
         // first turn
         TrayCoords trayCoords = new TrayCoords(0,0);
@@ -34,13 +31,9 @@ public class GameModelTest {
     }
 
     @Test
-    public void putTocken_victoryWithWinnerTest() throws BadTraySizeException {
+    public void putTocken_victoryWithWinnerTest() throws InitGameModelErrorException, BadTraySizeException, GameRunningException {
         GameModel gameModel = new GameModel();
-        try {
-            gameModel.newGame(2);
-        } catch (GameRunningException e) {
-            e.printStackTrace();
-        }
+        gameModel.newGame(2);
 
         // first turn
         gameModel.putTocken(new TrayCoords(0,0));
@@ -56,14 +49,11 @@ public class GameModelTest {
     }
 
     @Test
-    public void newGameTest() throws BadTraySizeException {
+    public void newGameTest() throws InitGameModelErrorException, BadTraySizeException, GameRunningException {
         // init game
         GameModel gameModel = new GameModel();
-        try {
-            gameModel.newGame(5);
-        } catch (GameRunningException e) {
-            e.printStackTrace();
-        }
+        gameModel.newGame(5);
+
         // game has begun
         assertTrue("New game has begun", gameModel.isInGame());
         assertTrue("No winner yet", gameModel.getWinner() == null);
@@ -73,13 +63,10 @@ public class GameModelTest {
     }
 
     @Test
-    public void changeTrayForm() throws BadTraySizeException, GameModelHasNoTrayException {
+    public void changeTrayForm() throws InitGameModelErrorException, BadTraySizeException, GameRunningException {
         GameModel gameModel = new GameModel();
-        try {
-            gameModel.newGame(5);
-        } catch (GameRunningException e) {
-            e.printStackTrace();
-        }
+        gameModel.newGame(5);
+
         // change tray form a first time
         gameModel.changeTrayForm(Shape.verticalLozange);
         assertTrue("Shape must be verticalLozange", gameModel.getTray().getShape().equals(Shape.verticalLozange));

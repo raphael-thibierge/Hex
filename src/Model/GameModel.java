@@ -4,7 +4,7 @@
 package Model;
 
 import Model.Exceptions.BadTraySizeException;
-import Model.Exceptions.GameModelHasNoTrayException;
+import Model.Exceptions.InitGameModelErrorException;
 import Model.Exceptions.GameRunningException;
 
 import java.awt.*;
@@ -21,12 +21,19 @@ public class GameModel extends Observable {
     private int height = 0;
 
 
-    public GameModel(){
+    public GameModel() throws InitGameModelErrorException {
+        try {
+            this.tray = new Tray(Tray.standardSize, Tray.standardSize);
+            this.newGame(Tray.standardSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new InitGameModelErrorException();
+        }
     }
 
     public void putTocken(TrayCoords coords){
         // if token is placed on tray
-        if (tray != null && inGame && tray.putTocken(coords, currentPlayer)){
+        if (inGame && tray.putTocken(coords, currentPlayer)){
             // test victory
             if (tray.testVictory(currentPlayer)){
                 // set winner
@@ -57,16 +64,12 @@ public class GameModel extends Observable {
     }
 
     public void newGame(int size) throws BadTraySizeException, GameRunningException {
-        // tray initialisation
-        if (this.tray != null){
-            // if a game is running, throw exception
-            if (!this.tray.isEmpty() && isInGame())
-                throw new GameRunningException();
-            // else editSize
-            this.tray.editSize(size);
-        } else {
-            this.tray = new Tray(size,size);
-        }
+        // if a game is running, throw exception
+        if (!this.tray.isEmpty() && isInGame())
+            throw new GameRunningException();
+
+        //  edit tray's sizes
+        this.tray.editSize(size);
         this.tray.setGraphicSize(this.width, this.height);
         // set first player color
         this.currentPlayer = Color.BLUE;
@@ -96,10 +99,7 @@ public class GameModel extends Observable {
         return winner;
     }
 
-    public void changeTrayForm(Shape shape) throws GameModelHasNoTrayException {
-        if (this.tray == null)
-            throw new GameModelHasNoTrayException();
-
+    public void changeTrayForm(Shape shape) {
         this.tray.editTrayForm(shape);
         this.setChanged();
         this.notifyObservers();
@@ -118,8 +118,6 @@ public class GameModel extends Observable {
     }
 
     public TrayCoords clickOnGrid(Point point) {
-        if (tray != null)
-            return this.tray.clickOnGrid(point);
-        return null;
+        return this.tray.clickOnGrid(point);
     }
 }

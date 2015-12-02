@@ -9,9 +9,8 @@ import java.util.ArrayList;
  * Created by Raphael Thibierge and Arthur Pavarino (S3A) on 15/11/15.
  */
 public class Tray {
-    public final static int standardSize = 1;
+    public final static int standardSize = 7;
     public final static int minimalSize = 2;
-    public static Shape nextTrayShape = Shape.verticalLozange;
 
     // data information
     private ArrayList<ArrayList<Cell>> grid;
@@ -22,7 +21,7 @@ public class Tray {
     // graphic information
     private int width = 0;
     private int height = 0;
-    private Shape shape = nextTrayShape;
+    private Shape shape = Shape.verticalLozange;
 
 
     public Tray(int nbLine, int nbColumn) throws BadTraySizeException{

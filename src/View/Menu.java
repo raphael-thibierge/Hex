@@ -2,7 +2,6 @@ package View;
 
 import Controller.Controller;
 import Model.Exceptions.BadTraySizeException;
-import Model.Exceptions.GameModelHasNoTrayException;
 import Model.Exceptions.GameRunningException;
 import Model.Tray;
 import Model.Shape;
@@ -48,15 +47,7 @@ public class Menu extends JMenuBar {
             }
 
             else if (source instanceof ShapeButton) {
-                try {
-                    controller.changeTrayForm(((ShapeButton) source).getShape());
-                } catch (GameModelHasNoTrayException e) {
-                    if (JOptionPane.showConfirmDialog(null, "Appliquer à la prochaine partie ?", "Forme de la grille",
-                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE)
-                            == JOptionPane.OK_OPTION ){
-                        Tray.nextTrayShape = ((ShapeButton) source).getShape();
-                    }
-                }
+                controller.changeTrayForm(((ShapeButton) source).getShape());
             }
 
         }};

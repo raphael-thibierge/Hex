@@ -5,7 +5,6 @@ package Controller;
 
 import Model.*;
 import Model.Exceptions.BadTraySizeException;
-import Model.Exceptions.GameModelHasNoTrayException;
 import Model.Exceptions.GameRunningException;
 import Model.Shape;
 
@@ -51,7 +50,7 @@ public class Controller {
         }
     }
 
-    public void changeTrayForm(Shape shape) throws GameModelHasNoTrayException{
+    public void changeTrayForm(Shape shape){
         model.changeTrayForm(shape);
     }
 }
