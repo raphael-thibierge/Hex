@@ -24,6 +24,11 @@ public class Controller {
         model.newGame(size);
     }
 
+    /**
+     * Stop
+     * @param size
+     * @throws BadTraySizeException
+     */
     public void forceNewGame(int size) throws BadTraySizeException {
         this.model.stopGame();
         try {
